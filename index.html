@@ -111,12 +111,48 @@
     </div>
 </div>
 
+<style>
+    .mobile-shortcut-btn {
+        background: #fff; border: 1px solid var(--primary); color: var(--primary);
+        padding: 6px 14px; border-radius: 5px !important; /* Đã giảm bo góc xuống 5 */
+        font-size: 11px; font-weight: bold; cursor: pointer; 
+        white-space: nowrap; flex: 0 0 auto; transition: 0.2s;
+    }
+    /* Hiệu ứng MÀU XANH khi được chọn */
+    .mobile-shortcut-btn.active {
+        background: var(--primary) !important; color: #fff !important;
+        box-shadow: 0 2px 6px rgba(0, 123, 255, 0.4);
+    }
+    .mobile-shortcut-btn.btn-purple { border-color: var(--purple); color: var(--purple); }
+    .mobile-shortcut-btn.btn-purple.active {
+        background: var(--purple) !important; color: #fff !important;
+        box-shadow: 0 2px 6px rgba(108, 92, 231, 0.4);
+    }
+    .mobile-close-btn {
+        background: #ff4757; color: white; border: none; padding: 6px 14px;
+        border-radius: 5px !important; /* Bo góc 5 cho đồng bộ */
+        font-size: 11px; font-weight: bold; cursor: pointer; 
+        white-space: nowrap; flex-shrink: 0; box-shadow: 0 2px 5px rgba(255, 71, 87, 0.4);
+    }
+</style>
+
 <div id="mobileSettingModal">
     <div class="mobile-modal-content">
-        <div class="mobile-modal-header">
-            <h3 id="mobileModalTitle">⚙️ TÙY CHỈNH</h3>
-            <button class="mobile-modal-close" onclick="closeMobileModal()">ĐÓNG ⬇</button>
+        
+        <div style="position: sticky; top: 0; z-index: 99; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: #f0f4f8; border-bottom: 1px solid #ddd; border-radius: 12px 12px 0 0;">
+            
+            <div style="display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;">
+                <button id="shortcutLeft" class="mobile-shortcut-btn" onclick="openMobileModal('layout')">📐 Lưới Chung</button>
+                <button id="shortcutRight" class="mobile-shortcut-btn btn-purple" onclick="openMobileModal('general')">🖼️ Nền & In</button>
+            </div>
+
+            <button class="mobile-close-btn" onclick="closeMobileModal()">✖ ĐÓNG</button>
         </div>
+
+        <div class="mobile-modal-header" style="justify-content: center;">
+            <h3 id="mobileModalTitle" style="text-align: center; width: 100%;">⚙️ TÙY CHỈNH</h3>
+        </div>
+
         <div class="mobile-modal-body" id="mobileModalBody"></div>
     </div>
 </div>
