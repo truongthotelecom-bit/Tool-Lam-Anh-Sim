@@ -98,6 +98,16 @@
         <input type="file" id="importConfig" accept=".json,.lite" style="display:none" onchange="handleImport(event); closeThemeModal();">
         <div style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;">
             <label style="font-size: 11px; font-weight: bold; color: var(--primary); display: block; margin-bottom: 8px;">☁️ KHO MẪU ĐÁM MÂY TỰ ĐỘNG</label>
+            
+            <div style="padding-bottom: 10px;">
+                <div style="position: relative;">
+                    <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5;">🔍</span>
+                    <input type="text" id="searchTemplateInput" 
+                           onkeyup="liveSearch('searchTemplateInput', 'cloudTemplatesList')" 
+                           placeholder="Tìm mẫu (VD: vip, 3x8...)" 
+                           style="width: 100%; padding: 8px 10px 8px 32px; border: 1px solid #ddd; border-radius: 20px; font-size: 12px; outline: none; box-sizing: border-box; transition: 0.3s;">
+                </div>
+            </div>
             <div id="cloudTemplatesList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-height: 300px; overflow-y: auto; padding: 5px;">
                 <div style="grid-column: 1/-1; text-align: center; font-size: 11px; color: #888;">Đang tải danh sách...</div>
             </div>
@@ -249,11 +259,19 @@
     </div>
 
     <div id="tab-layout" class="tab-content active">
+        
+    <div class="sub-tabs" style="margin-bottom: 10px;">
+        <button class="sub-tab-btn active" onclick="switchLayoutTab('sub-layout-size', this)">📐 Cột & Kích thước</button>
+        <button class="sub-tab-btn" onclick="switchLayoutTab('sub-layout-bg', this)">🎨 Nền Ô & Ngựa Vằn</button>
+        <button class="sub-tab-btn" onclick="switchLayoutTab('sub-layout-border', this)">🔲 Bo Góc & Viền</button>
+    </div>
+
+    <div id="sub-layout-size" class="sub-tab-content active">
         <div class="setting-box" style="border-top: 3px solid var(--danger);">
             <div class="setting-title" style="color:var(--danger);">📊 KÍCH THƯỚC Ô LƯỚI</div>
             <div class="setting-row">
                 <label>Cột hiển thị</label>
-                <div class="setting-inputs" style="font-weight:bold; gap: 15px;">
+                <div class="setting-inputs" style="font-weight:bold; gap: 15px; flex-wrap: wrap;">
                     <label><input type="checkbox" id="chkSo" checked onchange="updateUI(); updatePreviewImmediate(); debouncedSave();">Số</label>
                     <label><input type="checkbox" id="chkGia" checked onchange="updateUI(); updatePreviewImmediate(); debouncedSave();">Giá</label>
                     <label><input type="checkbox" id="chkMenh" checked onchange="updateUI(); updatePreviewImmediate(); debouncedSave();">Mệnh</label>
@@ -264,35 +282,47 @@
             <div class="setting-row"><label>Số lượng</label><div class="setting-inputs"><span>Cột:</span><input type="number" id="tableCols" value="2" class="mini"><span>Dòng:</span><input type="number" id="tableRows" value="10" class="mini"></div></div>
             <div class="setting-row"><label>Cách nhau</label><div class="setting-inputs"><span>Cột:</span><input type="number" id="tableGap" value="15" class="mini"><span>Dòng:</span><input type="number" id="rowGap" value="5" class="mini"></div></div>
         </div>
+    </div>
 
+    <div id="sub-layout-bg" class="sub-tab-content" style="display: none;">
         <div class="setting-box">
-            <div class="setting-title">🖼️ NỀN & VIỀN Ô LƯỚI</div>
-            <div class="setting-row"><label>Kiểu nền</label><div class="setting-inputs"><select id="cellBgMode" class="flex-1" onchange="updateUI()"><option value="solid">Màu trơn</option><option value="gradient">Gradient</option><option value="image">Ảnh tải lên</option></select></div></div>
+            <div class="setting-title">🖼️ NỀN LƯỚI</div>
+            <div class="setting-row"><label>Kiểu nền Ô</label><div class="setting-inputs"><select id="cellBgMode" class="flex-1" onchange="updateUI()"><option value="solid">Màu trơn</option><option value="gradient">Gradient</option><option value="image">Ảnh tải lên</option></select></div></div>
+            
             <div class="setting-row" id="cellBgSolidGrp"><label>Màu trơn</label><div class="setting-inputs"><input type="color" id="cellBgColor" value="#ffffff"><label><input type="checkbox" id="cellBgTrans" checked> Trong suốt</label></div></div>
             <div class="setting-row" id="cellBgGradGrp" style="display:none;"><label>Gradient</label><div class="setting-inputs"><input type="color" id="cellBgGradient1" value="#ffffff"><span>-></span><input type="color" id="cellBgGradient2" value="#f0f0f0"></div></div>
+            
             <div class="setting-row" id="cellBgImgGrp" style="display:none; align-items: flex-start;">
                 <label style="margin-top: 8px;">Ảnh Nền Ô</label>
-                <div class="setting-inputs" style="flex-direction: column; align-items: flex-start; width: 100%; min-width: 0;">
+                <div class="setting-inputs" style="flex-direction: column; align-items: flex-start; width: 100%; min-width: 0; gap: 8px;">
                     <div style="display:flex; gap:5px; width:100%; overflow: hidden;">
-                        <input type="file" id="cellBgInput" accept="image/*" style="flex: 1; width: 50px; padding: 6px; font-size: 11px; overflow: hidden;">
-                        <button onclick="openBgCloudModal('cell')" style="background:var(--danger); color:#fff; border:none; border-radius:4px; padding:0 10px; flex-shrink: 0; font-size: 11px; white-space: nowrap;">☁️ KHO NỀN Ô</button>
+                        <input type="file" id="cellBgInput" accept="image/*" style="flex: 1; width: 50px; padding: 6px; font-size: 11px; overflow: hidden; border: 1px solid #ccc; border-radius: 4px;">
+                        <button onclick="openBgCloudModal('cell')" style="background:var(--danger); color:#fff; border:none; border-radius:4px; padding:0 10px; flex-shrink: 0; font-size: 11px; white-space: nowrap; font-weight:bold;">☁️ KHO NỀN Ô</button>
                     </div>
-                    <input type="text" id="cellBgDriveLink" placeholder="Hoặc dán Link Ảnh Drive..." style="width:100%; border-color: var(--danger);">
+                    <input type="text" id="cellBgDriveLink" placeholder="Hoặc dán Link Ảnh Drive..." style="width:100%; border-color: var(--danger); padding: 8px; border-radius: 4px;">
                 </div>
             </div>
-            <div class="setting-row"><label>Bo & Viền</label><div class="setting-inputs"><span>Bo(R):</span><input type="number" id="cellRadius" value="0" class="mini"><span>Dày:</span><input type="number" id="cellBorderW" value="1" class="mini"></div></div>
-            <div class="setting-row"><label>Màu viền</label><div class="setting-inputs"><input type="color" id="cellBorderColor" value="#cccccc"><label><input type="checkbox" id="cellBorderTrans" checked> Ẩn</label></div></div>
         </div>
 
         <div class="setting-box" style="border-top: 3px solid var(--success);">
             <div class="setting-title" style="color:var(--success);">🦓 NỀN XEN KẼ (NGỰA VẰN)</div>
             <div class="setting-row"><label>Trạng thái</label><div class="setting-inputs"><label><input type="checkbox" id="useZebra" onchange="updateUI()"> Kích hoạt nền xen kẽ</label></div></div>
             <div id="zebraGroup" style="display:none;">
-                <div class="setting-row" style="background:#f4f4f4;"><label>Dòng LẺ</label><div class="setting-inputs"><span>Nền:</span><input type="color" id="zebraOddBg" value="#f4f4f4"><span>Số:</span><input type="color" id="zebraOddColorNum" value="#000"><span>Giá:</span><input type="color" id="zebraOddColorPrice" value="#000"><span>Mệnh:</span><input type="color" id="zebraOddColorMenh" value="#000"><span>Mạng:</span><input type="color" id="zebraOddColorMang" value="#000"></div></div>
-                <div class="setting-row"><label>Dòng CHẴN</label><div class="setting-inputs"><span>Nền:</span><input type="color" id="zebraEvenBg" value="#ffffff"><span>Số:</span><input type="color" id="zebraEvenColorNum" value="#000"><span>Giá:</span><input type="color" id="zebraEvenColorPrice" value="#000"><span>Mệnh:</span><input type="color" id="zebraEvenColorMenh" value="#000"><span>Mạng:</span><input type="color" id="zebraEvenColorMang" value="#000"></div></div>
+                <div class="setting-row" style="background:#f4f4f4;"><label>Dòng LẺ</label><div class="setting-inputs" style="flex-wrap: wrap;"><span>Nền:</span><input type="color" id="zebraOddBg" value="#f4f4f4"><span>Số:</span><input type="color" id="zebraOddColorNum" value="#000"><span>Giá:</span><input type="color" id="zebraOddColorPrice" value="#000"><span>Mệnh:</span><input type="color" id="zebraOddColorMenh" value="#000"><span>Mạng:</span><input type="color" id="zebraOddColorMang" value="#000"></div></div>
+                <div class="setting-row"><label>Dòng CHẴN</label><div class="setting-inputs" style="flex-wrap: wrap;"><span>Nền:</span><input type="color" id="zebraEvenBg" value="#ffffff"><span>Số:</span><input type="color" id="zebraEvenColorNum" value="#000"><span>Giá:</span><input type="color" id="zebraEvenColorPrice" value="#000"><span>Mệnh:</span><input type="color" id="zebraEvenColorMenh" value="#000"><span>Mạng:</span><input type="color" id="zebraEvenColorMang" value="#000"></div></div>
             </div>
         </div>
     </div>
+
+    <div id="sub-layout-border" class="sub-tab-content" style="display: none;">
+        <div class="setting-box" style="border-top: 3px solid #f39c12;">
+            <div class="setting-title">🔲 VIỀN Ô LƯỚI</div>
+            <div class="setting-row"><label>Bo & Viền</label><div class="setting-inputs"><span>Bo(R):</span><input type="number" id="cellRadius" value="0" class="mini"><span>Dày:</span><input type="number" id="cellBorderW" value="1" class="mini"></div></div>
+            <div class="setting-row"><label>Màu viền</label><div class="setting-inputs"><input type="color" id="cellBorderColor" value="#cccccc"><label><input type="checkbox" id="cellBorderTrans" checked> Ẩn</label></div></div>
+        </div>
+    </div>
+
+</div>
 
     <div id="tab-num" class="tab-content">
         <div class="sub-tabs">
@@ -579,63 +609,100 @@
     </div>
 
     <div id="tab-general" class="tab-content">
+    
+    <div class="sub-tabs" style="margin-bottom: 10px;">
+        <button class="sub-tab-btn active" onclick="switchSubTab('sub-general-bg', this)">🌄 Khổ Giấy & Nền</button>
+        <button class="sub-tab-btn" onclick="switchSubTab('sub-general-margin', this)">📏 Lề & Gáy</button>
+        <button class="sub-tab-btn" onclick="switchSubTab('sub-general-export', this)">📦 Xuất File</button>
+    </div>
+
+    <div id="sub-general-bg" class="sub-tab-content active">
+        <div class="setting-box" style="border-top: 3px solid var(--primary);">
+            
+            <div class="setting-row" style="background:#f4f9ff; align-items: flex-start; margin-bottom: 10px; padding: 10px; border-radius: 4px;">
+                <label style="margin-top: 8px;">Khổ Giấy</label>
+                <div class="setting-inputs" style="flex-wrap: wrap; gap: 8px;">
+                    <select id="canvasSizeMode" class="flex-1" onchange="toggleCanvasSizeInputs(); updatePreviewImmediate(); debouncedSave();" style="width: 100%; font-weight: bold; color: var(--primary); padding: 8px; border-radius: 6px; border: 1px solid #ccc; outline: none;">
+                        <option value="auto" selected>✨ Tự động (Theo Cột/Ô)</option>
+                        <option value="fixed">🔒 Khóa cứng (Nhập W & H)</option>
+                        <option value="ratio">🖼️ Theo Tỷ lệ Ảnh Nền</option>
+                    </select>
+                    
+                    <div id="customCanvasSizeWrapper" style="display: none; width: 100%; gap: 10px; margin-top: 5px; flex-direction: column; align-items: flex-start; background: #fff; padding: 8px; border-radius: 6px; border: 1px dashed #ccc;">
+                        <select id="fixedSizePreset" style="width:100%; font-size:12px; padding: 6px; border-radius: 4px; border: 1px solid #ccc; outline: none;" onchange="if(this.value){let [w,h]=this.value.split('x'); document.getElementById('customCanvasW').value=w; document.getElementById('customCanvasH').value=h; updatePreviewImmediate(); debouncedSave();}">
+                            <option value="">-- Tùy chỉnh (Tự nhập tay) --</option>
+                            <option value="600x800">600 x 800 (Dọc)</option>
+                            <option value="800x600">800 x 600 (Ngang)</option>
+                            <option value="800x800">800 x 800 (Vuông)</option>
+                            <option value="826x1169">826 x 1169 (A4 Dọc)</option>
+                            <option value="1169x826">1169 x 826 (A4 Ngang)</option>
+                            <option value="1080x1080">1080 x 1080 (Vuông chuẩn)</option>
+                            <option value="1080x1920">1080 x 1920 (Story)</option>
+                        </select>
+                        <div style="display: flex; gap: 10px; align-items: center; width: 100%;">
+                            <span>Ngang:</span><input type="number" id="customCanvasW" value="1080" class="mini" oninput="updatePreviewImmediate(); debouncedSave();" style="width: 60px;">
+                            <span id="labelCustomH">Cao:</span><input type="number" id="customCanvasH" value="1920" class="mini" oninput="updatePreviewImmediate(); debouncedSave();" style="width: 60px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="setting-row"><label>Loại Nền</label><div class="setting-inputs"><select id="bgMode" class="flex-1" onchange="updateUI()"><option value="solid">1. Màu trơn</option><option value="gradient" selected>2. Chuyển màu</option> <option value="image">3. Ảnh tải lên</option></select></div></div>
+            <div id="bgSolidGroup" class="setting-row" style="display:none;"><label>Màu trơn</label><div class="setting-inputs"><input type="color" id="bgColor" value="#ffffff"></div></div>
+            <div id="bgGradientGroup" class="setting-row" style="display:none;"><label>Màu Gradient</label><div class="setting-inputs"><input type="color" id="bgGradient1" value="#ffffff"><span>-></span><input type="color" id="bgGradient2" value="#006680"></div></div>
+            
+            <div id="bgImageGroup" class="setting-row" style="display:none; align-items: flex-start;">
+                <label style="margin-top: 8px;">Úp Ảnh Nền</label>
+                <div class="setting-inputs" style="flex-direction: column; align-items: flex-start; width: 100%; min-width: 0; gap: 8px;">
+                    <select id="bgFitMode" style="width: 100%; padding: 8px; font-weight: bold; border: 2px solid #f1c40f; border-radius: 6px; outline: none;" onchange="updatePreviewImmediate(); debouncedSave();">
+                        <option value="cover">✂️ Cắt xén lấp đầy (Cover - Khuyên dùng)</option>
+                        <option value="stretch" selected>↔️ Kéo giãn (Stretch - Mặc định)</option>
+                        <option value="contain">🖼️ Vừa vặn (Contain - Có viền trống)</option>
+                    </select>
+                    <div style="display:flex; gap:5px; width:100%; overflow: hidden;">
+                        <input type="file" id="bgInput" accept="image/*" style="flex: 1; width: 50px; padding: 6px; font-size: 11px; overflow: hidden; border: 1px solid #ccc; border-radius: 4px;">
+                        <button onclick="openBgCloudModal('global')" style="background:var(--success); color:#fff; border:none; border-radius:4px; padding:0 10px; flex-shrink: 0; font-size: 11px; white-space: nowrap; font-weight: bold; box-shadow: 0 2px 4px rgba(40,167,69,0.2);">☁️ KHO NỀN</button>
+                    </div>
+                    <input type="text" id="bgDriveLink" placeholder="Hoặc dán Link Ảnh Drive..." style="width:100%; border-color: var(--primary); padding: 8px; border-radius: 4px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sub-general-margin" class="sub-tab-content">
         <div class="setting-box" style="border-top: 3px solid var(--purple);">
-            <div class="setting-title" style="color:var(--purple);">📏 CÀI ĐẶT LỀ & GÁY IN TOÀN ẢNH</div>
             <div class="setting-row"><label>Lề Dọc</label><div class="setting-inputs"><span>Trán:</span><input type="number" id="tZoneH" value="100" class="mini"><span>Chân:</span><input type="number" id="fZoneH" value="80" class="mini"></div></div>
             <div class="setting-row" style="background:#fff4f4;"><label style="color:var(--danger)">Đóng gáy in</label><div class="setting-inputs"><select id="bindingMode" class="flex-1" onchange="updateUI(); updatePreviewImmediate(); debouncedSave();"><option value="none">1. Không đóng gáy</option><option value="single">2. Đóng gáy 1 mặt</option><option value="double">3. Đóng gáy 2 mặt (Lẻ/Chẵn)</option></select></div></div>
             <div id="grpMarginNormal" class="setting-row"><label>Lề Ngang</label><div class="setting-inputs"><span>Trái:</span><input type="number" id="mLeft" value="30" class="mini"><span>Phải:</span><input type="number" id="mRight" value="30" class="mini"></div></div>
             <div id="grpMarginBinding" class="setting-row" style="display:none; background:#fff4f4;"><label style="color:var(--danger)">Lề Đóng Gáy</label><div class="setting-inputs"><span>Bên Gáy:</span><input type="number" id="marginBinding" value="80" class="mini"><span>Còn Lại:</span><input type="number" id="marginNonBinding" value="30" class="mini"></div></div>
-            <div class="setting-row" style="background:#e8f4ff; border-top:1px dashed #3498db; margin-top:5px;">
-                <label style="color:#0984e3; font-weight:bold;">Kích Thước Cố Định</label>
-                <div class="setting-inputs" style="flex-wrap:wrap;">
-                    <label style="width:100%;"><input type="checkbox" id="useFixedSize" onchange="updatePreviewImmediate(); debouncedSave();"> Khóa Khung Hình (px)</label>
-                    <select id="fixedSizePreset" style="width:100%; margin-top:5px; font-size:12px;" onchange="if(this.value){let [w,h]=this.value.split('x'); document.getElementById('fixedW').value=w; document.getElementById('fixedH').value=h; updatePreviewImmediate(); debouncedSave();}">
-                        <option value="">-- Tùy chỉnh (Tự nhập) --</option>
-                        <option value="600x800">600 x 800 (Dọc)</option>
-                        <option value="800x600">800 x 600 (Ngang)</option>
-                        <option value="800x800">800 x 800 (Vuông)</option>
-                        <option value="826x1169">826 x 1169 (A4 Dọc)</option>
-                        <option value="1169x826">1169 x 826 (A4 Ngang)</option>
-                        <option value="1080x1080">1080 x 1080 (Vuông chuẩn)</option>
-                        <option value="1080x1920">1080 x 1920 (Story)</option>
-                    </select>
-                    <div style="display:flex; gap:5px; margin-top:5px; width:100%;">
-                        <span>W:</span><input type="number" id="fixedW" value="1080" class="mini">
-                        <span>H:</span><input type="number" id="fixedH" value="1920" class="mini">
-                    </div>
-                </div>
-            </div>
         </div>
-        
-        <div class="setting-box">
-            <div class="setting-title">🌄 BACKGROUND (NỀN TOÀN ẢNH)</div>
-            <div class="setting-row"><label>Chế độ nền</label><div class="setting-inputs"><select id="bgMode" class="flex-1" onchange="updateUI()"><option value="solid">1. Màu trơn</option><option value="gradient" selected>2. Chuyển màu</option> <option value="image">3. Ảnh tải lên</option></select></div></div>
-            <div id="bgSolidGroup" class="setting-row" style="display:none;"><label>Màu trơn</label><div class="setting-inputs"><input type="color" id="bgColor" value="#ffffff"></div></div>
-            <div id="bgGradientGroup" class="setting-row" style="display:none;"><label>Màu Gradient</label><div class="setting-inputs"><input type="color" id="bgGradient1" value="#ffffff"><span>-></span><input type="color" id="bgGradient2" value="#006680"></div></div>
-            <div id="bgImageGroup" class="setting-row" style="display:none; align-items: flex-start;">
-                <label style="margin-top: 8px;">Úp Ảnh Nền</label>
-                <div class="setting-inputs" style="flex-direction: column; align-items: flex-start; width: 100%; min-width: 0;">
-                    <div style="display:flex; gap:5px; width:100%; overflow: hidden;">
-                        <input type="file" id="bgInput" accept="image/*" style="flex: 1; width: 50px; padding: 6px; font-size: 11px; overflow: hidden;">
-                        <button onclick="openBgCloudModal('global')" style="background:var(--success); color:#fff; border:none; border-radius:4px; padding:0 10px; flex-shrink: 0; font-size: 11px; white-space: nowrap;">☁️ KHO NỀN</button>
-                    </div>
-                    <input type="text" id="bgDriveLink" placeholder="Hoặc dán Link Ảnh Drive..." style="width:100%; border-color: var(--primary);">
-                </div>
-            </div>
-        </div>
-        
+    </div>
+
+    <div id="sub-general-export" class="sub-tab-content">
         <div class="setting-box" style="border-top: 3px solid var(--success);">
-            <div class="setting-title" style="color:var(--success);">📦 CÀI ĐẶT XUẤT FILE</div>
             <div class="setting-row"><label>Độ nét</label><div class="setting-inputs"><select id="exportScale" class="flex-1"><option value="1">1x (Chuẩn Web)</option><option value="2" selected>2x (Nét HD)</option><option value="3">3x (In Ấn)</option></select></div></div>
             <div class="setting-row"><label>Định dạng</label><div class="setting-inputs"><select id="exportFormat" class="flex-1"><option value="image/png">PNG (Khuyên dùng)</option><option value="image/jpeg">JPG</option></select></div></div>
         </div>
     </div>
-</div> <div id="printArea"></div>
+
+</div>
+ <div id="printArea"></div>
 <script src="https://stuk.github.io/jszip/dist/jszip.min.js"></script>
 <div id="bgCloudModalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 999999; justify-content: center; align-items: center; animation: fadeIn 0.2s; box-sizing: border-box; padding: 15px;">
     <div style="background: #fff; padding: 15px; border-radius: 12px; width: 100%; max-width: 400px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.3); box-sizing: border-box;">
         <div style="display: flex; justify-content: space-between; align-items: center; font-weight: bold; color: var(--success); border-bottom: 1px dashed #ccc; padding-bottom: 10px; font-size: 15px; flex-shrink: 0;">
             <span>🌄 KHO NỀN ĐÁM MÂY</span>
+            <div style="padding: 10px 0; flex-shrink: 0;">
+                <div style="position: relative;">
+                    <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5;">🔍</span>
+                    
+                    <input type="text" id="searchCloudInput" 
+                        onkeyup="liveSearch('searchCloudInput', 'bgCloudList')" 
+                        placeholder="Tìm nền (VD: tet, phong canh...)" 
+                        style="width: 100%; padding: 10px 10px 10px 35px; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; outline: none; box-sizing: border-box; transition: 0.3s;">
+                        
+                </div>
+            </div>
             <span style="cursor: pointer; color: #999; font-size: 24px; line-height: 1; padding: 0 5px;" onclick="document.getElementById('bgCloudModalOverlay').style.display='none'">✖</span>
         </div>
         <div id="bgCloudList" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; overflow-y: auto; padding: 15px 5px; margin-top: 5px; flex-grow: 1;">
