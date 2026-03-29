@@ -132,8 +132,21 @@
     #drmMessage { color: #e74c3c; font-weight: bold; margin-top: 15px; font-size: 14px; }
     
     /* --- TRẢ POPUP VỀ ĐÁY BÁN MÀN HÌNH --- */
-    #mobileSettingModal { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100%; background: transparent; z-index: 999998; flex-direction: column; justify-content: flex-end; animation: fadeIn 0.2s; pointer-events: none; }
-    .mobile-modal-content { pointer-events: auto; background: #f4f7f6; width: 100%; max-height: 50vh; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.4); animation: slideUp 0.3s cubic-bezier(0.1, 0.8, 0.1, 1); padding-bottom: 20px; margin: 0; }
+    #mobileSettingModal { 
+        display: none; 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100vw; 
+        height: 100%; 
+        background: rgba(0,0,0,0.3); /* Phủ một lớp màu đen mờ nhẹ để dễ nhìn popup */
+        z-index: 999998; 
+        flex-direction: column; 
+        justify-content: flex-end; 
+        animation: fadeIn 0.2s; 
+        pointer-events: auto; /* QUAN TRỌNG NHẤT: Cho phép nhận cú click */
+    }
+.mobile-modal-content { pointer-events: auto; background: #f4f7f6; width: 100%; max-height: 50vh; border-radius: 20px 20px 0 0; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,0.4); animation: slideUp 0.3s cubic-bezier(0.1, 0.8, 0.1, 1); padding-bottom: 20px; margin: 0; }
     .mobile-modal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #fff; border-bottom: 1px solid #ddd; border-radius: 20px 20px 0 0; flex-shrink: 0;}
     .mobile-modal-header h3 { margin: 0; font-size: 15px; color: var(--primary); font-weight: 800;}
     .mobile-modal-close { background: #e0e0e0; color: #333; border: none; padding: 6px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; font-size: 12px;}
@@ -149,7 +162,16 @@
         .mobile-modal-header { border-radius: 12px 12px 0 0; }
     }
     @keyframes popUpRight { from { opacity: 0; transform: translateX(50px) scale(0.9); } to { opacity: 1; transform: translateX(0) scale(1); } }
-
+    /* --- BỔ SUNG ĐỂ XUYÊN THẤU CLICK --- */
+    #mobileSettingModal {
+        background: transparent !important; /* Xóa nền đen để nhìn rõ màn hình */
+        pointer-events: none !important; /* Xuyên thấu toàn bộ cú chạm xuống các đối tượng bên dưới */
+    }
+    .mobile-modal-content {
+        pointer-events: auto !important; /* Riêng khu vực 3 đường băng thì vẫn nhận click bình thường */
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.15) !important; /* Thêm tí bóng đổ cho nổi bật */
+    }
+    
     #fabContainer { position: fixed; bottom: 30px; right: 20px; z-index: 999997; width: 55px; height: 55px; }
     #fabBtn { background: var(--purple); color: white; width: 100%; height: 100%; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4); font-size: 24px; cursor: grab; user-select: none; -webkit-tap-highlight-color: transparent; transition: transform 0.1s;}
     #fabBtn:active { cursor: grabbing; transform: scale(0.95); }
@@ -170,12 +192,4 @@
         #canvasWrapper { max-height: 50vh; padding: 5px; width: 100%; border-radius: 6px;}
         .setting-row { grid-template-columns: 85px 1fr; padding: 10px; }
         #fabContainer { bottom: 20px; right: 15px; }
-    }
-
-    @media print {
-        @page { margin: 0; size: A4 portrait; }
-        html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; width: 100% !important; height: auto !important; display: block !important; overflow: visible !important; }
-        body > * { display: none !important; }
-        #printArea { display: block !important; position: static !important; width: 100% !important; }
-        #printArea img.print-page { width: 210mm !important; height: 297mm !important; object-fit: contain !important; margin: 0 auto !important; padding: 0 !important; display: block !important; page-break-after: always !important; }
     }
