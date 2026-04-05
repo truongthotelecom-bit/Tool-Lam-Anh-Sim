@@ -891,12 +891,12 @@
             font-family: monospace;
             box-sizing: border-box;
         }
-        .sim-modal-footer {
+        .sim-modal-toolbar {
             display: flex;
             gap: 8px;
-            padding: 12px 10px;
+            padding: 10px 10px;
             background: #f8f9fa;
-            border-top: 1px solid #eee;
+            border-bottom: 1px solid #ddd;
             flex-shrink: 0;
         }
         .btn-sim-action {
@@ -996,7 +996,7 @@
 
     <div id="themeModalOverlay"
         onclick="if(event.target===this) this.style.display='none'"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 3000000; justify-content: center; align-items: center; padding: 15px;">
+        style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); z-index: 10000005; justify-content: center; align-items: center; padding: 15px;">
         <div id="themeModalContent"
             style="background: #fff; padding: 20px; border-radius: 12px; width: 100%; max-width: 450px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
             <div class="theme-modal-header"
@@ -1027,12 +1027,12 @@
                     KHO MẪU ĐÁM MÂY TỰ ĐỘNG</label>
                 <div style="padding-bottom: 10px;">
                     <div style="position: relative;">
-                        <span
-                            style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5;">🔍</span>
+                        <span style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: 0.5;">🔍</span>
                         <input type="text" id="searchTemplateInput"
                             onkeyup="liveSearch('searchTemplateInput', 'cloudTemplatesList')"
                             placeholder="Tìm mẫu (VD: vip, 3x8...)"
-                            style="width: 100%; padding: 8px 10px 8px 32px; border: 1px solid #ddd; border-radius: 20px; font-size: 12px; outline: none; box-sizing: border-box; transition: 0.3s;">
+                            style="width: 100%; padding: 8px 32px 8px 32px; border: 1px solid #ddd; border-radius: 20px; font-size: 12px; outline: none; box-sizing: border-box; transition: 0.3s;">
+                        <span onclick="document.getElementById('searchTemplateInput').value=''; liveSearch('searchTemplateInput', 'cloudTemplatesList')" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #ff6b81; font-size: 14px; padding: 5px; font-weight: bold;" title="Xóa tìm kiếm">✖</span>
                     </div>
                 </div>
                 <div id="cloudTemplatesList"
@@ -1186,7 +1186,7 @@
 
     <div id="modal-bg-cloud"
         onclick="if(event.target === this) this.style.display = 'none'"
-        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000000; justify-content:center; align-items:center; padding: 15px; box-sizing: border-box; backdrop-filter: blur(3px);">
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:10000005; justify-content:center; align-items:center; padding: 15px; box-sizing: border-box; backdrop-filter: blur(3px);">
         <div
             style="background:#fff; width:100%; max-width:600px; border-radius:15px; padding:20px; box-shadow:0 15px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; position: relative;">
 
@@ -1200,7 +1200,8 @@
             <div style="position: relative; margin-bottom: 15px;">
                 <input type="text" id="cloudSearchBox" onkeyup="liveSearch('cloudSearchBox', 'bgCloudList')"
                     placeholder="🔍 Gõ hashtag tìm nhanh (VD: #Tet, #Vang)..."
-                    style="width:100%; padding:12px 15px; border:2px solid #007bff; border-radius:25px; font-weight:bold; box-sizing:border-box; outline: none; transition: 0.3s; font-size: 14px;">
+                    style="width:100%; padding:12px 40px 12px 15px; border:2px solid #007bff; border-radius:25px; font-weight:bold; box-sizing:border-box; outline: none; transition: 0.3s; font-size: 14px;">
+                <span onclick="document.getElementById('cloudSearchBox').value=''; liveSearch('cloudSearchBox', 'bgCloudList')" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #ff6b81; font-size: 18px; padding: 5px; font-weight: bold;" title="Xóa tìm kiếm">✖</span>
             </div>
 
             <div id="bgCloudList"
@@ -1254,13 +1255,13 @@
             <b style="font-size: 16px;">📝 NHẬP DANH SÁCH SIM</b>
             <span onclick="window.closeSimListModal()" style="cursor: pointer; font-size: 24px; color: #ff4757;">✖</span>
         </div>
-        <div class="sim-modal-body">
-            <textarea id="mobileListArea" placeholder="Dán danh sách SIM tại đây..."></textarea>
-        </div>
-        <div class="sim-modal-footer">
+        <div class="sim-modal-toolbar">
             <button class="btn-sim-action btn-sim-paste" onclick="window.pasteToMobileList()">📋 DÁN SIM</button>
             <button class="btn-sim-action btn-sim-clear" onclick="document.getElementById('mobileListArea').value = ''">🗑️ XÓA</button>
             <button class="btn-sim-action btn-sim-apply" onclick="window.applySimList()">✅ XÁC NHẬN</button>
+        </div>
+        <div class="sim-modal-body">
+            <textarea id="mobileListArea" placeholder="Dán danh sách SIM tại đây..."></textarea>
         </div>
     </div>
     
