@@ -1124,7 +1124,7 @@
 }
 .cloud-item-thumb {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 3;
     min-height: 180px;
     height: auto;
     flex-shrink: 0 !important;
@@ -1136,19 +1136,22 @@
     justify-content: center !important;
     border-bottom: 1px solid #f1f5f9;
     box-sizing: border-box;
+    padding: 0 !important;
 }
 .cloud-item-thumb img {
+    position: relative;
+    z-index: 1;
     width: 100% !important;
     height: 100% !important;
     max-height: 100% !important;
     object-fit: contain !important;
-    padding: 6px !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
     display: block !important;
     transition: transform 0.3s ease;
 }
 .cloud-item-card:hover .cloud-item-thumb img {
-    transform: scale(1.05);
+    transform: scale(1.04);
 }
 .cloud-item-badge {
     position: absolute;
@@ -1429,6 +1432,10 @@
     gap: 12px;
     background: #f8fafc;
 }
+/* Các khối con (toolbar, banner, lưới mẫu) giữ nguyên chiều cao, cột tự cuộn thay vì ép dẹt */
+.tpl-main-view > * {
+    flex-shrink: 0;
+}
 
 /* Banner báo danh mục đang chọn */
 /* Banner báo danh mục đang chọn - Màu Xanh Indigo phân biệt Kho Nội Bộ */
@@ -1630,8 +1637,12 @@
 /* Lưới hiển thị các thẻ mẫu */
 .tpl-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-auto-rows: max-content; /* Hàng luôn cao đúng theo nội dung thẻ (ảnh + tên + nút) */
+    align-content: start;
+    align-items: stretch;
+    flex-shrink: 0; /* Không cho lưới bị co lại trong cột flex .tpl-main-view (lỗi thẻ bị ép dẹt trên PC) */
+    gap: 14px;
     min-height: 180px;
 }
 
@@ -1654,7 +1665,8 @@
 .tpl-card-thumb-wrap {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 3;
+    min-height: 180px;
     background: #f8fafc;
     cursor: pointer;
     overflow: hidden;
@@ -1662,18 +1674,34 @@
     align-items: center;
     justify-content: center;
     border-bottom: 1px solid #f1f5f9;
+    padding: 0 !important;
+    box-sizing: border-box;
+    flex-shrink: 0;
 }
 .tpl-card-thumb {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
+    max-height: 100%;
     object-fit: contain;
-    padding: 6px;
+    padding: 0 !important;
     box-sizing: border-box;
     display: block;
     transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 .tpl-card-thumb-wrap:hover .tpl-card-thumb {
-    transform: scale(1.05);
+    transform: scale(1.04);
+}
+.tpl-thumb-backdrop {
+    position: absolute;
+    inset: -15px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(14px) brightness(0.96) opacity(0.35);
+    transform: scale(1.1);
+    z-index: 0;
+    pointer-events: none;
 }
 .tpl-thumb-overlay {
     position: absolute;
@@ -2402,24 +2430,29 @@
     }
     .tpl-card-thumb-wrap {
         width: 100% !important;
-        height: clamp(120px, 25vh, 190px) !important;
-        min-height: 110px !important;
+        height: clamp(140px, 28vh, 220px) !important;
+        min-height: 130px !important;
         aspect-ratio: auto !important;
         background: #f8fafc !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        padding: 6px !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
         flex-shrink: 0 !important;
+        position: relative !important;
+        overflow: hidden !important;
     }
     .tpl-card-thumb {
+        position: relative !important;
+        z-index: 1 !important;
         width: 100% !important;
         height: 100% !important;
         max-height: 100% !important;
         object-fit: contain !important;
         border-radius: 6px !important;
         display: block !important;
+        padding: 0 !important;
     }
     .tpl-card-content {
         padding: 8px 10px !important;
@@ -2459,24 +2492,29 @@
     }
     .cloud-item-thumb {
         width: 100% !important;
-        height: clamp(120px, 25vh, 190px) !important;
-        min-height: 110px !important;
+        height: clamp(140px, 28vh, 220px) !important;
+        min-height: 130px !important;
         aspect-ratio: auto !important;
         background: #f8fafc !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        padding: 6px !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
         flex-shrink: 0 !important;
+        position: relative !important;
+        overflow: hidden !important;
     }
     .cloud-item-thumb img {
+        position: relative !important;
+        z-index: 1 !important;
         width: 100% !important;
         height: 100% !important;
         max-height: 100% !important;
         object-fit: contain !important;
         border-radius: 6px !important;
         display: block !important;
+        padding: 0 !important;
     }
     .cloud-item-info {
         padding: 12px 14px !important;

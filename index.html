@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=2.5">
+    <link rel="stylesheet" href="css/style.css?v=3.0">
     <script src="js/configs.js?v=2.5"></script>
     <style>
         /* CSS GIAO DIỆN PRO-BOX MỚI TỪ BẢN THAM KHẢO */
@@ -410,11 +410,7 @@
         .col-settings {
             padding-bottom: 120px !important;
         }
-        #themeModalContent {
-            max-height: 90vh;
-            overflow-y: auto;
-            padding-bottom: 100px !important;
-        }
+
 
         /* Khung chứa preview - Tối ưu cho không gian thiết kế */
         #canvasWrapper {
@@ -1465,7 +1461,7 @@
                     </div>
 
                     <!-- DANH SÁCH THẺ MẪU ĐÁM MÂY -->
-                    <div id="cloudTemplatesList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-auto-rows: max-content; gap: 12px; overflow-y: auto; padding: 4px;">
+                    <div id="cloudTemplatesList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); grid-auto-rows: max-content; gap: 14px; overflow-y: auto; padding: 6px;">
                         <div style="grid-column: 1/-1; text-align: center; font-size: 12px; color: #888; padding: 30px;">Đang tải danh sách mẫu đám mây...</div>
                     </div>
                 </div>
@@ -1497,7 +1493,7 @@
                 <!-- Thumbnail Preview -->
                 <div style="text-align: center;">
                     <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">ẢNH XEM TRƯỚC (THUMBNAIL):</div>
-                    <img id="saveTplThumbPreview" src="" alt="Thumbnail" style="width: 100%; max-height: 220px; aspect-ratio: 1 / 1; object-fit: contain; background: #f8fafc; border-radius: 8px; border: 1px solid #cbd5e1; padding: 6px; box-sizing: border-box;">
+                    <img id="saveTplThumbPreview" src="" alt="Thumbnail" style="width: 100%; max-height: 240px; aspect-ratio: 4 / 3; object-fit: cover; object-position: center; background: #f8fafc; border-radius: 8px; border: 1px solid #cbd5e1; padding: 0; box-sizing: border-box;">
                 </div>
 
                 <!-- Tên mẫu -->
@@ -1891,8 +1887,8 @@
     </div>
     
     <!-- Scripts loaded from external files -->
-    <script src="js/template-manager.js?v=2.5"></script>
-    <script src="js/main.js?v=2.5"></script>
+    <script src="js/template-manager.js?v=3.0"></script>
+    <script src="js/main.js?v=3.0"></script>
 </body>
 
 </html>

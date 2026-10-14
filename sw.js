@@ -1,5 +1,5 @@
 // Service Worker cho Tool Bảng Số VIP (PWA Standalone)
-const CACHE_NAME = 'bang-so-vip-v3';
+const CACHE_NAME = 'bang-so-vip-v8';
 const STATIC_ASSETS = [
   './index.html',
   'index.html',
@@ -50,27 +50,23 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Chiến lược Network-First: Luôn tải file mới nhất từ mạng/máy, chỉ fallback sang cache khi mất mạng
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Cập nhật ngầm trong nền nếu có mạng
-        fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, networkResponse);
-            });
-          }
-        }).catch(() => {});
-        return cachedResponse;
-      }
-
-      return fetch(event.request).catch(async () => {
-        // Fallback offline cho trang web khi mở từ màn hình chính
-        if (event.request.mode === 'navigate') {
-          const fallback = await caches.match('./index.html') || await caches.match('index.html');
-          if (fallback) return fallback;
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const resClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, resClone));
         }
-      });
-    })
+        return networkResponse;
+      })
+      .catch(() => {
+        return caches.match(event.request).then(async (cached) => {
+          if (cached) return cached;
+          if (event.request.mode === 'navigate') {
+            return (await caches.match('./index.html')) || (await caches.match('index.html'));
+          }
+        });
+      })
   );
 });
