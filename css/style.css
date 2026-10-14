@@ -245,126 +245,351 @@
     .drm-btn:hover { background: #2ecc71; }
     #drmMessage { color: #e74c3c; font-weight: bold; margin-top: 15px; font-size: 14px; }
     
-    /* --- BADGE THÔNG TIN BẢN QUYỀN GÓC PHẢI TRÊN --- */
-    .license-info-badge {
+    /* =========================================================
+       NGĂN XẾP BẢN QUYỀN GÓC PHẢI (SLIDE-OUT LICENSE DRAWER)
+       Hỗ trợ tối ưu 100% trên cả PC (Desktop) và Mobile (Điện thoại)
+       ========================================================= */
+
+    /* Lớp nền mờ phủ màn hình khi kéo ngăn xếp ra - Tự động đóng khi bấm ra ngoài */
+    .license-drawer-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 999995;
+        background: rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.26s ease;
+    }
+    .license-drawer-backdrop.active {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .license-drawer {
         position: fixed;
         top: 10px;
-        right: 15px;
+        right: 0;
         z-index: 1000000;
-        background: rgba(15, 23, 42, 0.90);
+        display: flex;
+        align-items: flex-start;
+        transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* Hiệu ứng ánh vàng lấp lánh cho Chìa Khoá Vàng */
+    @keyframes keyGoldenGlow {
+        0%, 100% {
+            filter: drop-shadow(0 0 5px rgba(250, 204, 21, 0.9)) drop-shadow(0 0 10px rgba(234, 179, 8, 0.45));
+        }
+        50% {
+            filter: drop-shadow(0 0 9px rgba(250, 204, 21, 1)) drop-shadow(0 0 16px rgba(245, 158, 11, 0.75));
+        }
+    }
+
+    /* TAY NẮM NGĂN XẾP BÁM MÉP PHẢI (CHÌA KHOÁ VÀNG) */
+    .license-drawer-handle {
+        border: 1.5px solid rgba(250, 204, 21, 0.45);
+        border-right: none;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.92));
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 12px;
-        padding: 6px 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-        cursor: pointer;
-        user-select: none;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        transition: all 0.25s ease;
-    }
-    .license-info-badge:hover {
-        background: rgba(15, 23, 42, 0.98);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
-        border-color: rgba(52, 152, 219, 0.7);
-    }
-    .badge-status-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: #10b981;
-        box-shadow: 0 0 10px #10b981;
-        flex-shrink: 0;
-        transition: all 0.3s ease;
-    }
-    .badge-status-dot.active {
-        background: #10b981;
-        box-shadow: 0 0 10px #10b981;
-    }
-    .badge-status-dot.checking {
-        background: #f1c40f;
-        box-shadow: 0 0 10px #f1c40f;
-    }
-    .badge-status-dot.error,
-    .badge-status-dot.offline,
-    .badge-status-dot.expired,
-    .badge-status-dot.blocked {
-        background: #ef4444;
-        box-shadow: 0 0 10px #ef4444;
-    }
-    .badge-content {
-        display: flex;
-        flex-direction: column;
-        line-height: 1.35;
-        text-align: left;
-    }
-    .badge-row-mac {
-        font-size: 11px;
-        color: #e2e8f0;
+        border-radius: 20px 0 0 20px;
+        padding: 5px 9px 5px 11px;
         display: flex;
         align-items: center;
         gap: 6px;
+        cursor: pointer;
+        box-shadow: -3px 4px 15px rgba(0, 0, 0, 0.35), 0 0 10px rgba(250, 204, 21, 0.2);
+        transition: all 0.22s ease;
+        height: 36px;
+        user-select: none;
+        -webkit-user-select: none;
+        outline: none;
+        flex-shrink: 0;
     }
-    .badge-label {
-        font-size: 9.5px;
-        font-weight: bold;
-        color: #94a3b8;
+    .license-drawer-handle:hover {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.98));
+        padding-left: 13px;
+        box-shadow: -5px 6px 20px rgba(0, 0, 0, 0.45), 0 0 16px rgba(250, 204, 21, 0.45);
+        border-color: #facc15;
+    }
+    .license-drawer-handle * {
+        pointer-events: none;
+    }
+
+    /* Hình Chìa Khoá Vàng */
+    .drawer-handle-key {
+        font-size: 16px;
+        line-height: 1;
+        display: inline-block;
+        animation: keyGoldenGlow 3s ease-in-out infinite;
+        transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .license-drawer-handle:hover .drawer-handle-key {
+        transform: scale(1.22) rotate(-15deg);
+    }
+
+    .drawer-handle-arrow {
+        font-size: 10px;
+        color: #facc15;
+        transition: transform 0.3s ease;
+        display: inline-block;
+        line-height: 1;
+    }
+
+    /* BẢNG NỘI DUNG NGĂN XẾP */
+    .license-drawer-panel {
+        width: 290px;
+        background: rgba(15, 23, 42, 0.96);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1.5px solid rgba(250, 204, 21, 0.35);
+        border-right: none;
+        border-radius: 14px 0 0 14px;
+        box-shadow: -8px 10px 35px rgba(0, 0, 0, 0.45), 0 0 20px rgba(250, 204, 21, 0.15);
+        color: #ffffff;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    /* Header ngăn xếp */
+    .drawer-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 9px 12px;
+        background: linear-gradient(90deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+        border-bottom: 1px solid rgba(250, 204, 21, 0.25);
+        user-select: none;
+        -webkit-user-select: none;
+    }
+    .drawer-title-wrap {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        cursor: pointer;
+        padding: 3px 10px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+    .drawer-title-wrap:hover {
+        background: rgba(250, 204, 21, 0.12);
+        transform: scale(1.02);
+    }
+    .drawer-header-key {
+        font-size: 15px;
+        line-height: 1;
+        display: inline-block;
+        filter: drop-shadow(0 0 6px rgba(250, 204, 21, 0.9));
+    }
+    .drawer-header-text {
+        font-size: 12px;
+        font-weight: 800;
+        color: #facc15;
         letter-spacing: 0.5px;
     }
-    .badge-val {
-        font-family: monospace;
-        font-size: 13px;
+
+    /* Body ngăn xếp */
+    .drawer-panel-body {
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Hộp Mã máy */
+    .drawer-mac-card {
+        background: rgba(30, 41, 59, 0.65);
+        border: 1px solid rgba(56, 189, 248, 0.3);
+        border-radius: 8px;
+        padding: 8px 10px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .drawer-mac-card:hover {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: #38bdf8;
+        box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+    }
+    .drawer-mac-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2px;
+    }
+    .drawer-mac-title {
+        font-size: 10px;
+        font-weight: 700;
+        color: #94a3b8;
+    }
+    .drawer-copy-btn {
+        font-size: 10px;
         color: #38bdf8;
-        letter-spacing: 1px;
+        font-weight: 700;
+        background: rgba(56, 189, 248, 0.15);
+        padding: 2px 6px;
+        border-radius: 4px;
     }
-    .badge-copy-icon {
+    .drawer-mac-code {
+        font-family: monospace;
+        font-size: 13.5px;
+        font-weight: 700;
+        color: #38bdf8;
+        letter-spacing: 1.5px;
+        text-align: center;
+        padding: 3px 0;
+    }
+    .drawer-mac-hint {
+        font-size: 9px;
+        color: #64748b;
+        text-align: center;
+    }
+
+    /* Hộp Trạng thái bản quyền */
+    .drawer-status-card {
+        background: rgba(30, 41, 59, 0.65);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 8px 10px;
+    }
+    .drawer-status-title {
+        font-size: 10px;
+        font-weight: 700;
+        color: #94a3b8;
+        margin-bottom: 3px;
+    }
+    .drawer-status-content {
         font-size: 11px;
-        opacity: 0.75;
-        transition: transform 0.2s, opacity 0.2s;
+        line-height: 1.4;
+        color: #e2e8f0;
     }
-    .license-info-badge:hover .badge-copy-icon {
-        opacity: 1;
-        transform: scale(1.15);
-    }
-    .badge-row-exp {
-        font-size: 10.5px;
-        color: #cbd5e1;
-        font-weight: 500;
-    }
-    .badge-row-exp b {
+    .drawer-status-content b {
         color: #4ade80;
     }
-    .badge-row-exp.expired b,
-    .badge-row-exp.offline b {
+    .drawer-status-card.expired .drawer-status-content b,
+    .drawer-status-card.blocked .drawer-status-content b,
+    .drawer-status-card.offline .drawer-status-content b,
+    .drawer-status-card.error .drawer-status-content b {
         color: #f87171;
     }
+
+    /* Nút thao tác dưới đáy */
+    .drawer-btn-group {
+        display: flex;
+        gap: 6px;
+        margin-top: 2px;
+    }
+    .btn-drawer-action {
+        flex: 1;
+        padding: 7px 6px;
+        font-size: 11px;
+        font-weight: 700;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+    .btn-drawer-copy {
+        background: #0284c7;
+        color: #ffffff;
+    }
+    .btn-drawer-copy:hover {
+        background: #0369a1;
+    }
+    .btn-drawer-check {
+        background: #334155;
+        color: #e2e8f0;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .btn-drawer-check:hover {
+        background: #475569;
+        color: #ffffff;
+    }
+
+    /* CHẤM TRẠNG THÁI STATUS DOT */
+    .badge-status-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #10b981;
+        box-shadow: 0 0 8px #10b981;
+        flex-shrink: 0;
+        transition: all 0.3s ease;
+    }
+    .badge-status-dot.active { background: #10b981; box-shadow: 0 0 8px #10b981; }
+    .badge-status-dot.checking { background: #f1c40f; box-shadow: 0 0 8px #f1c40f; }
+    .badge-status-dot.error,
+    .badge-status-dot.offline,
+    .badge-status-dot.expired,
+    .badge-status-dot.blocked { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+
+    /* =========================================================
+       CƠ CHẾ TRƯỢT ẨN / HIỆN CỦA NGĂN XẾP (COLLAPSED VS EXPANDED)
+       ========================================================= */
+    /* Khi THU GỌN: Panel trượt thụt hoàn toàn vào mép phải, chỉ lộ tay nắm */
+    .license-drawer.collapsed {
+        transform: translateX(290px);
+    }
+    .license-drawer.collapsed .drawer-handle-arrow {
+        transform: rotate(0deg);
+    }
+
+    /* Khi MỞ RỘNG: Panel trượt ra êm ái */
+    .license-drawer.expanded {
+        transform: translateX(0);
+    }
+    .license-drawer.expanded .drawer-handle-arrow {
+        transform: rotate(180deg);
+    }
+
+    /* =========================================================
+       ĐIỀU CHỈNH TRÊN GIAO DIỆN DI ĐỘNG (MOBILE)
+       ========================================================= */
     @media screen and (max-width: 768px) {
-        .license-info-badge {
-            top: 6px;
-            right: 8px;
-            padding: 4px 10px;
-            border-radius: 8px;
-            gap: 6px;
+        .license-drawer {
+            top: 8px !important;
+        }
+        .license-drawer-handle {
+            height: 32px !important;
+            padding: 4px 7px 4px 9px !important;
+            border-radius: 16px 0 0 16px !important;
+            font-size: 11px !important;
+            gap: 5px !important;
+        }
+        .drawer-handle-key {
+            font-size: 14px !important;
         }
         .badge-status-dot {
-            width: 8px;
-            height: 8px;
+            width: 8px !important;
+            height: 8px !important;
         }
-        .badge-val {
-            font-size: 11px;
+        .license-drawer-panel {
+            width: 270px !important;
+            max-width: 86vw !important;
+            border-radius: 12px 0 0 12px !important;
         }
-        .badge-row-exp {
-            font-size: 9.5px;
+        .license-drawer.collapsed {
+            transform: translateX(270px) !important;
         }
-    }
-    body.studio-mode .license-info-badge,
-    body.studio-mode #licenseInfoBadge {
-        display: none !important;
+        .license-drawer.expanded {
+            transform: translateX(0) !important;
+        }
+        body.studio-mode .license-drawer {
+            display: flex !important;
+        }
     }
 
     body.sim-modal-open .fab-container,

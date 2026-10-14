@@ -17,8 +17,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=2.2">
-    <script src="js/configs.js?v=2.2"></script>
+    <link rel="stylesheet" href="css/style.css?v=2.5">
+    <script src="js/configs.js?v=2.5"></script>
     <style>
         /* CSS GIAO DIỆN PRO-BOX MỚI TỪ BẢN THAM KHẢO */
         .setting-box {
@@ -1183,17 +1183,53 @@
 
 <body>
 
-    <!-- BADGE HIỂN THỊ MÃ MÁY & HẠN DÙNG GÓC PHẢI TRÊN -->
-    <div id="licenseInfoBadge" class="license-info-badge" onclick="copyMac()" title="Mã máy & Bản quyền (Bấm để copy mã máy)">
-        <span class="badge-status-dot" id="badgeStatusDot"></span>
-        <div class="badge-content">
-            <div class="badge-row-mac">
-                <span class="badge-label">MÃ MÁY:</span>
-                <b id="badgeMacText" class="badge-val">ĐANG TẢI...</b>
-                <span class="badge-copy-icon" title="Copy mã máy">📋</span>
+    <!-- LỚP NỀN TRONG SUỐT CHO NGĂN XẾP (TỰ ĐỘNG ĐÓNG KHI BẤM RA NGOÀI MÀN HÌNH) -->
+    <div id="licenseDrawerBackdrop" class="license-drawer-backdrop" onclick="window.toggleLicenseDrawer(false, event)"></div>
+
+    <!-- NGĂN XẾP BẢN QUYỀN GÓC PHẢI (SLIDE-OUT LICENSE DRAWER CHO CẢ PC & MOBI) -->
+    <div id="licenseDrawer" class="license-drawer collapsed">
+        <!-- TAY NẮM NGĂN XẾP BÁM MÉP PHẢI (CHÌA KHOÁ VÀNG) -->
+        <button type="button" id="licenseDrawerHandle" class="license-drawer-handle" onclick="window.toggleLicenseDrawer(undefined, event)" title="Bản quyền & Mã máy (Bấm chìa khoá để Mở/Đóng)">
+            <span class="badge-status-dot" id="badgeStatusDot"></span>
+            <span class="drawer-handle-key" id="drawerHandleKey">🔑</span>
+            <span class="drawer-handle-arrow" id="drawerHandleArrow">◀</span>
+        </button>
+
+        <!-- BẢNG NỘI DUNG NGĂN XẾP (TRƯỢT TỪ MÉP PHẢI RA KHI BẤM) -->
+        <div class="license-drawer-panel" id="licenseDrawerPanel">
+            <div class="drawer-panel-header">
+                <div class="drawer-title-wrap" onclick="window.toggleLicenseDrawer(false, event)" title="Bấm vào để đóng lại">
+                    <span class="drawer-header-key">🔑</span>
+                    <span class="drawer-header-text">BẢN QUYỀN PHẦN MỀM</span>
+                </div>
             </div>
-            <div class="badge-row-exp" id="badgeExpRow">
-                <span id="badgeExpText">Đang kiểm tra bản quyền...</span>
+            
+            <div class="drawer-panel-body">
+                <!-- Hộp hiển thị Mã Máy -->
+                <div class="drawer-mac-card" onclick="copyMac()" title="Bấm vào để copy mã máy">
+                    <div class="drawer-mac-header">
+                        <span class="drawer-mac-title">MÃ MÁY (DEVICE ID):</span>
+                        <span class="drawer-copy-btn">📋 Copy</span>
+                    </div>
+                    <div class="drawer-mac-code" id="badgeMacText">ĐANG TẢI...</div>
+                    <div class="drawer-mac-hint">💡 Bấm vào ô này để sao chép mã máy nhanh</div>
+                </div>
+
+                <!-- Hộp hiển thị Trạng Thái & Hạn Dùng -->
+                <div class="drawer-status-card" id="badgeExpRow">
+                    <div class="drawer-status-title">TRẠNG THÁI BẢN QUYỀN:</div>
+                    <div class="drawer-status-content" id="badgeExpText">Đang kiểm tra trực tuyến...</div>
+                </div>
+
+                <!-- Các nút thao tác -->
+                <div class="drawer-btn-group">
+                    <button type="button" class="btn-drawer-action btn-drawer-copy" onclick="copyMac()">
+                        📋 Sao Chép Mã Máy
+                    </button>
+                    <button type="button" class="btn-drawer-action btn-drawer-check" onclick="window.checkLicense(true)" title="Kiểm tra lại bản quyền trực tuyến">
+                        🔄 Kiểm Tra Lại
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -1855,8 +1891,8 @@
     </div>
     
     <!-- Scripts loaded from external files -->
-    <script src="js/template-manager.js?v=2.2"></script>
-    <script src="js/main.js?v=2.2"></script>
+    <script src="js/template-manager.js?v=2.5"></script>
+    <script src="js/main.js?v=2.5"></script>
 </body>
 
 </html>
