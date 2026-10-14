@@ -1,0 +1,1862 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+    <title>Tool Bảng Số VIP - Bản Quyền Giao Khách (UPGRADED)</title>
+    <!-- Cấu hình PWA (Chế độ Ứng Dụng độc lập không có thanh địa chỉ) -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e293b">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Bảng Số VIP">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=2.2">
+    <script src="js/configs.js?v=2.2"></script>
+    <style>
+        /* CSS GIAO DIỆN PRO-BOX MỚI TỪ BẢN THAM KHẢO */
+        .setting-box {
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 12px;
+            overflow: hidden;
+            border: 1px solid #eaeaea;
+        }
+
+        .setting-title {
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 13px;
+            text-transform: uppercase;
+            color: #fff;
+            background: #34495e;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .setting-row {
+            display: flex;
+            padding: 10px 15px;
+            border-bottom: 1px solid #fcfcfc;
+            align-items: center;
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-row>label {
+            width: 90px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .setting-inputs {
+            display: flex;
+            flex: 1;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 12px;
+        }
+
+        .setting-inputs input[type="number"],
+        .setting-inputs input[type="text"] {
+            width: 50px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            outline: none;
+        }
+
+        .setting-inputs input[type="text"] {
+            width: 100%;
+            text-align: left;
+        }
+
+        .setting-inputs select {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .setting-inputs input[type="color"] {
+            padding: 0;
+            width: 28px;
+            height: 28px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .setting-inputs label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .btn-mini {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .column.fullscreen {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            z-index: 999999 !important;
+            background: #fff !important;
+            margin: 0 !important;
+            padding: 20px !important;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        /* [STUDIO MODE] - CHẾ ĐỘ THIẾT KẾ 50/50 TRÊN MOBILE */
+        body.studio-mode {
+            overflow: hidden !important;
+            height: 100vh !important;
+            height: 100dvh !important; /* Dùng dvh để ổn định trên mobile */
+            width: 100vw !important;
+        }
+        body.studio-mode .col-data, 
+        body.studio-mode .preview-header,
+        body.studio-mode #licenseInfoBadge,
+        body.studio-mode .license-info-badge {
+            display: none !important;
+        }
+        body.studio-mode #previewColumn {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 50vh !important;
+            height: 50dvh !important;
+            z-index: 1000 !important;
+            background: #fff !important;
+            margin: 0 !important;
+            padding: 5px !important;
+            border-bottom: 2px solid #ccc !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        body.studio-mode #canvasWrapper {
+            flex: 1 1 0 !important;
+            min-height: 0 !important;
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 6px !important;
+            position: relative;
+            z-index: 5 !important;
+            overflow: auto !important;
+        }
+
+        /* Khi Modal Tuỳ Chỉnh ĐANG MỞ:
+           View xem chiếm trọn vẹn 1/2 màn hình ĐT (50dvh), các nút chức năng ẩn đi (nằm dưới modal) */
+        body.studio-mode.mobile-modal-open .preview-pagination,
+        body.studio-mode.mobile-modal-open .preview-actions {
+            display: none !important;
+        }
+
+        /* Khi ĐÓNG Modal Tuỳ Chỉnh: MỚI HIỆN các nút chức năng tại VỊ TRÍ 2 (Nửa dưới màn hình, mục tiêu view xem không co giãn) */
+        body.studio-mode:not(.mobile-modal-open) .preview-pagination {
+            position: fixed !important;
+            top: calc(50dvh + 12px) !important;
+            left: 0 !important;
+            width: 100vw !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 6px !important;
+            margin: 0 !important;
+            z-index: 1005 !important;
+            pointer-events: auto !important;
+        }
+        body.studio-mode:not(.mobile-modal-open) .preview-pagination .btn-page-nav {
+            padding: 4px 12px !important;
+            font-size: 11.5px !important;
+            border-radius: 5px !important;
+            background: #007bff !important;
+            color: #fff !important;
+            border: none !important;
+            font-weight: bold !important;
+            box-shadow: 0 2px 5px rgba(0,123,255,0.2) !important;
+        }
+        body.studio-mode:not(.mobile-modal-open) .preview-pagination .page-indicator {
+            padding: 4px 8px !important;
+            font-size: 11.5px !important;
+            background: #eee !important;
+            border-radius: 5px !important;
+            font-weight: bold !important;
+        }
+        body.studio-mode:not(.mobile-modal-open) .preview-pagination input[type="number"] {
+            width: 32px !important;
+            font-size: 11.5px !important;
+            padding: 2px !important;
+            text-align: center !important;
+        }
+        body.studio-mode:not(.mobile-modal-open) .preview-actions {
+            position: fixed !important;
+            top: calc(50dvh + 48px) !important;
+            left: 0 !important;
+            width: 100vw !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            gap: 5px !important;
+            margin: 0 !important;
+            z-index: 1005 !important;
+            pointer-events: auto !important;
+        }
+        body.studio-mode:not(.mobile-modal-open) .preview-actions .btn-preview-action {
+            padding: 5px 9px !important;
+            font-size: 11px !important;
+            border-radius: 6px !important;
+            gap: 3px !important;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12) !important;
+        }
+        body.studio-mode #btnPrintA4,
+        body.studio-mode .btn-print-a4 {
+            display: none !important;
+        }
+        body.studio-mode #mobileSettingModal {
+            height: 50dvh !important;
+            max-height: 50dvh !important;
+        }
+
+        /* [SIDEBAR & POPUP V26.6] - UNITY SYSTEM */
+        #mobileSettingModal {
+            display: none;
+            position: fixed !important;
+            z-index: 9999999 !important; /* Sidebar: 9.9 triệu */
+            transition: none !important;
+            padding: 0 !important; /* Xóa mọi padding của cha */
+        }
+
+        /* CHẾ ĐỘ MOBILE (50/50), ÁP DỤNG TRÊN CẢ MAIN SCREEN & STUDIO MODE */
+        @media (max-width: 768px) {
+            #mobileSettingModal {
+                top: auto !important;
+                bottom: 0 !important;
+                left: 0 !important;
+                width: 100vw !important;
+                height: 52dvh !important;
+                pointer-events: auto !important;
+                background: transparent !important;
+            }
+
+            /* Ẩn cột cài đặt tĩnh trên mobile (dùng Popup / Drawer khi cần) */
+            .col-settings { display: none !important; }
+
+            /* Nút nổi tuỳ chỉnh trên Mobile (Đặt ở DƯỚI CÙNG theo Phương án 1) */
+            .fab-container,
+            #fabContainer {
+                display: flex !important;
+                bottom: 20px !important;
+                right: 20px !important;
+                width: 52px !important;
+                height: 52px !important;
+                min-width: 52px !important;
+                min-height: 52px !important;
+                max-width: 52px !important;
+                max-height: 52px !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Nút menu thống nhất trên Mobile (Đặt ở PHÍA TRÊN nút cài đặt) */
+            .unified-menu-container,
+            #unifiedMenuContainer {
+                bottom: 85px !important;
+                right: 20px !important;
+                width: 52px !important;
+                min-width: 52px !important;
+                max-width: 52px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: flex-end !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                transition: opacity 0.2s, transform 0.2s;
+            }
+
+            /* KHI BẢNG TUỲ CHỌN HIỆN LÊN: ẨN CẢ 2 NÚT NỔI (ĐÃ CÓ DẤU X ĐÓNG BẢNG - PHƯƠNG ÁN 1) */
+            body.mobile-modal-open .fab-container,
+            body.mobile-modal-open #fabContainer,
+            body.mobile-modal-open .unified-menu-container,
+            body.mobile-modal-open #unifiedMenuContainer {
+                display: none !important;
+            }
+
+            /* KHI MỞ MODAL QUẢN LÝ MẪU: ẨN TOÀN BỘ NÚT NỔI ĐỂ KHÔNG CHE GIAO DIỆN MẪU */
+            body.theme-modal-open .fab-container,
+            body.theme-modal-open #fabContainer,
+            body.theme-modal-open .unified-menu-container,
+            body.theme-modal-open #unifiedMenuContainer {
+                display: none !important;
+            }
+
+            /* KHI MỞ MODAL NHẬP DANH SÁCH SIM: ẨN TOÀN BỘ 2 NÚT NỔI (MENU & CÀI ĐẶT) */
+            body.sim-modal-open .fab-container,
+            body.sim-modal-open #fabContainer,
+            body.sim-modal-open .unified-menu-container,
+            body.sim-modal-open #unifiedMenuContainer {
+                display: none !important;
+            }
+
+            .mobile-modal-close-btn {
+                display: flex !important;
+            }
+
+            /* Ẩn các thanh Tab cũ nằm trong Body của Popup trên Mobile */
+            #mobileModalBody .sub-tabs,
+            #mobileModalBody .sub-sub-tabs {
+                display: none !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .fab-container {
+                display: none !important;
+            }
+            .mobile-only-menu-item {
+                display: none !important;
+            }
+        }
+
+
+        /* CHẾ ĐỘ DESKTOP FULLSCREEN (ÔM KHÍT KHUNG LÀM VIỆC) */
+        #previewColumn.fullscreen ~ #mobileSettingModal {
+            top: 85px !important; 
+            right: 20px !important; 
+            width: 380px !important; /* Ép cứng 380px */
+            height: calc(100vh - 105px) !important; /* 85 top + 20 bottom = 105 */
+            left: auto !important;
+            pointer-events: auto !important; /* Cho phép tương tác popup */
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        #previewColumn.fullscreen ~ #mobileSettingModal .mobile-modal-content {
+            height: 100% !important;
+            max-height: 100% !important;
+        }
+
+
+        /* NỘI DUNG POPUP (CHUNG) */
+        .mobile-modal-content {
+            background: #fff !important;
+            height: auto !important; 
+            max-height: 48vh !important; /* Bottom sheet: không dùng 100% màn hình */
+            width: 100% !important;  
+            margin: 0 !important; 
+            padding: 0 !important;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+            border-radius: 12px !important;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.2) !important; /* v26.6: Chuyển bóng đổ sang đây cho đẹp */
+            pointer-events: auto !important;
+            overflow: hidden;
+            box-sizing: border-box !important;
+        }
+
+        body.studio-mode .mobile-modal-content {
+            border-radius: 20px 20px 0 0 !important;
+            height: 100% !important; /* Studio mode vẫn lấp kín 50vh màn hình */
+            max-height: 100% !important;
+        }
+
+        body.studio-mode .mobile-modal-drag-handle,
+        #previewColumn.fullscreen ~ #mobileSettingModal .mobile-modal-drag-handle {
+            display: none !important;
+        }
+        body.studio-mode .mobile-modal-header-area {
+            padding: 5px 0 !important;
+        }
+
+        /* Fix trượt cuối trang và tối ưu mobile (V26.6 - SIÊU TRÀN VIỀN) */
+        .mobile-modal-body {
+            padding: 0px 5px 200px 5px !important; /* Triệt tiêu 30px rác, chỉ để lề 5px cực mỏng */
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+            box-sizing: border-box !important;
+        }
+        .col-settings {
+            padding-bottom: 120px !important;
+        }
+        #themeModalContent {
+            max-height: 90vh;
+            overflow-y: auto;
+            padding-bottom: 100px !important;
+        }
+
+        /* Khung chứa preview - Tối ưu cho không gian thiết kế */
+        #canvasWrapper {
+            width: 100%;
+            height: 85vh;
+            background: #e9ecef;
+            overflow: auto;
+            position: relative;
+            display: flex; /* Dùng flex + margin auto để căn giữa khi nhỏ và tự động neo Top-Left khi lớn */
+            padding: 20px;
+            box-sizing: border-box;
+            cursor: grab;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #preview {
+            display: block;
+            flex-shrink: 0;
+            margin: auto; /* QUAN TRỌNG: Kết hợp với flex (không justify-content) để căn giữa và neo góc */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            border: 1px solid #ddd;
+            transform-origin: 0 0;
+            transition: width 0.1s ease-out;
+        }
+
+        /* Toast thông báo Pro */
+        .toast-notification {
+            position: fixed;
+            top: 15px;
+            bottom: auto;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(44, 62, 80, 0.95);
+            color: #fff;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 12px;
+            z-index: 10000000;
+            pointer-events: none;
+            opacity: 0;
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+        .toast-notification.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+
+        /* CSS Đám Mây - Vòng Xoay & Item */
+        .loading-box {
+            text-align: center;
+            background: rgba(20, 20, 20, 0.9);
+            padding: 40px 60px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .loader-double {
+            width: 60px;
+            height: 60px;
+            border: 3px solid transparent;
+            border-top-color: #007bff;
+            border-bottom-color: #007bff;
+            border-radius: 50%;
+            position: relative;
+            animation: spin-v16 2s linear infinite;
+            margin: 0 auto 25px;
+        }
+
+        .loader-double::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 3px solid transparent;
+            border-left-color: #2ecc71;
+            border-right-color: #2ecc71;
+            border-radius: 50%;
+            animation: spin-reverse 1.5s linear infinite;
+        }
+
+        @keyframes spin-v16 {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spin-reverse {
+            to {
+                transform: rotate(-360deg);
+            }
+        }
+
+        .progress-dots span {
+            font-size: 30px;
+            color: #007bff;
+            display: inline-block;
+            animation: dots-jump 1.4s infinite;
+        }
+
+        .progress-dots span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .progress-dots span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes dots-jump {
+
+            0%,
+            20% {
+                transform: translateY(0);
+                opacity: 0.2;
+            }
+
+            50% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 0.2;
+            }
+        }
+
+        #globalLoading {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(7px);
+            z-index: 2147483647;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cloud-item-wrapper {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            transition: 0.3s;
+            cursor: pointer;
+            background: #fff;
+            width: 100%;
+        }
+
+        .cloud-item-wrapper:hover {
+            border-color: #007bff;
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+        }
+
+        .local-loading-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .local-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: local-spin 1s linear infinite;
+            margin-bottom: 5px;
+        }
+
+        @keyframes local-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .local-loading-text {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .dots::after {
+            content: '';
+            animation: local-dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes local-dots {
+
+            0%,
+            20% {
+                content: '';
+            }
+
+            40% {
+                content: '.';
+            }
+
+            60% {
+                content: '..';
+            }
+
+            80%,
+            100% {
+                content: '...';
+            }
+        }
+
+        /* MENU THỐNG NHẤT (V26) */
+        .unified-menu-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000000 !important; /* v26.6: Nổi trên tất cả, kể cả Popup (9.9M) */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            transition: bottom 0.3s cubic-bezier(0.1, 0.8, 0.1, 1);
+        }
+
+        .main-menu-btn {
+            width: 52px !important;
+            height: 52px !important;
+            min-width: 52px !important;
+            min-height: 52px !important;
+            max-width: 52px !important;
+            max-height: 52px !important;
+            aspect-ratio: 1 / 1 !important;
+            background: #2c3e50;
+            color: #fff;
+            border-radius: 50% !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2000001;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            flex-shrink: 0 !important;
+            flex-grow: 0 !important;
+            box-sizing: border-box !important;
+            padding: 0 !important;
+            line-height: 1 !important;
+            overflow: hidden !important;
+        }
+
+        .main-menu-btn:hover {
+            transform: scale(1.08) rotate(90deg);
+            background: #34495e;
+        }
+
+        /* NÚT NỔI TUỲ CHỈNH (FAB) CHO MOBILE */
+        .fab-container {
+            position: fixed;
+            bottom: 85px;
+            right: 20px;
+            z-index: 10000000 !important;
+            display: none;
+            transition: bottom 0.3s cubic-bezier(0.1, 0.8, 0.1, 1);
+        }
+
+        .fab-btn {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.45);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 10px 30px rgba(108, 92, 231, 0.6);
+        }
+
+        .fab-btn:active {
+            transform: scale(0.92);
+        }
+
+        .sub-menu-list {
+            display: none;
+            position: absolute;
+            bottom: 70px;
+            flex-direction: column;
+            gap: 10px;
+            align-items: flex-end;
+            animation: slideUpV26 0.3s ease-out;
+        }
+
+        @keyframes slideUpV26 {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .sub-menu-item {
+            background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+            color: #2c3e50;
+            padding: 12px 22px;
+            border-radius: 35px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid #ddd;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .sub-menu-item:hover {
+            background: #2c3e50;
+            color: #fff;
+            transform: translateX(-8px);
+            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
+        }
+
+        .sub-menu-item.active {
+            background: #3498db;
+            color: #fff;
+            border-color: #2980b9;
+        }
+
+
+        /* HELP MODAL (V26) */
+        .help-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 3000000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .help-modal-content {
+            background: #fff;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            padding: 25px;
+            position: relative;
+        }
+
+        .help-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: #e74c3c;
+            cursor: pointer;
+        }
+
+        .status-info {
+            font-size: 11px;
+            color: #666;
+            font-style: italic;
+            margin-top: 2px;
+            display: block;
+            width: 100%;
+        }
+
+        .btn-remove {
+            background: #ff4757 !important;
+            color: white !important;
+            border: none;
+            padding: 0 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .btn-remove:hover {
+            background: #ff6b81 !important;
+        }
+
+        /* UI Tối ưu: Thanh Tab Trượt Ngang (V26.6) */
+        .sub-tabs {
+            display: flex;
+            gap: 5px;
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #3498db #f1f1f1;
+            border: 1px solid #eee;
+        }
+
+        .sub-tabs::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .sub-tabs::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .sub-tabs::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 10px;
+        }
+
+        .sub-tab-btn {
+            padding: 8px 16px;
+            border: none;
+            background: #eee;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            color: #555;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .sub-tab-btn:hover {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .sub-tab-btn.active {
+            background: #3498db;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+        }
+
+        /* --- CSS TAB CẤP 3 (MICRO-TABS) --- */
+        .sub-sub-tab-btn {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            background: #fdfdfd;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            color: #777;
+            font-weight: 600;
+            text-transform: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .sub-sub-tab-btn:hover { 
+            background: #f0f7ff;
+            border-color: #3498db;
+            color: #3498db;
+            transform: translateY(-1px);
+        }
+        .sub-sub-tab-btn.active {
+            background: #f1c40f;
+            color: #000;
+            border-color: #f39c12;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(241, 196, 15, 0.3);
+        }
+        .sub-sub-tab-content { 
+            display: none; 
+            padding-top: 10px;
+            animation: fadeInSubSub 0.3s ease;
+        }
+        .sub-sub-tab-content.active { display: block; }
+        
+        @keyframes fadeInSubSub {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- CLOUD UI RESTORATION CLASSIC PRO --- */
+        .cloud-item-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            min-height: 290px;
+            height: auto;
+        }
+        .cloud-item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            border-color: #3498db;
+        }
+        .cloud-item-thumb {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            min-height: 180px;
+            height: auto;
+            flex-shrink: 0 !important;
+            background: #f8f9fa;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .cloud-item-thumb img {
+            width: 100%;
+            height: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            padding: 6px;
+            box-sizing: border-box;
+            display: block;
+            transition: transform 0.3s;
+        }
+        .cloud-item-card:hover .cloud-item-thumb img {
+            transform: scale(1.05);
+        }
+        .cloud-item-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #e74c3c;
+            color: #fff;
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .cloud-item-info {
+            padding: 10px;
+            flex-grow: 1;
+        }
+        .cloud-item-title {
+            font-size: 13px;
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cloud-item-tags {
+            font-size: 10px;
+            color: #3498db;
+            font-weight: 600;
+        }
+        .cloud-item-action {
+            background: #f8f9fa;
+            color: #3498db;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 8px;
+            text-align: center;
+            border-top: 1px solid #f0f0f0;
+            transition: 0.2s;
+        }
+        .cloud-item-card:hover .cloud-item-action {
+            background: #3498db;
+            color: #fff;
+        }
+
+        /* Classic Cloud Background Grid */
+        .cloud-bg-card {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #eee;
+            transition: 0.3s;
+            cursor: pointer;
+            background: #000;
+        }
+        .cloud-bg-card:hover { border-color: #3498db; transform: scale(1.03); z-index: 10; }
+        .cloud-bg-thumb {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            height: auto;
+            overflow: hidden;
+            opacity: 0.9;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f172a;
+        }
+        .cloud-bg-card:hover .cloud-bg-thumb { opacity: 1; }
+        .cloud-bg-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 6px;
+            box-sizing: border-box;
+        }
+        .cloud-bg-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: #fff;
+            padding: 20px 8px 5px 8px;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        /* Fix trượt modal trên điện thoại: để ruột modal tự cuộn mượt mà */
+        #themeModalContent {
+            max-height: 96vh;
+            overflow: hidden !important;
+            padding-bottom: 0 !important;
+        }
+
+        /* [MOBILE SIM LIST MODAL] - FULL SCREEN INPUT MODIFIED */
+        #mobileSimListModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            background: #fff;
+            z-index: 20000000 !important;
+            flex-direction: column;
+            animation: slideUpSim 0.3s ease-out;
+            overflow: hidden;
+        }
+        @keyframes slideUpSim {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .sim-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #2c3e50;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .sim-modal-toolbar,
+        .sim-modal-footer {
+            display: flex;
+            gap: 8px;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            flex-shrink: 0;
+        }
+        .sim-modal-body {
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        #mobileListArea {
+            flex: 1;
+            width: 100%;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            outline: none;
+            resize: none;
+            font-family: monospace;
+            box-sizing: border-box;
+        }
+        .btn-sim-action {
+            flex: 1;
+            padding: 12px 5px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            white-space: nowrap;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .btn-sim-paste { background: #3498db; color: #fff; }
+        .btn-sim-clear { background: #e74c3c; color: #fff; }
+        .btn-sim-apply { background: #2ecc71; color: #fff; flex: 1.4; }
+
+        @media screen and (max-width: 360px) {
+            .sim-modal-footer { gap: 5px; padding: 10px 5px; }
+            .btn-sim-action { font-size: 11px; padding: 10px 2px; }
+        }
+
+        .col-settings {
+            padding-bottom: 100px !important;
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                padding-bottom: 100px;
+            }
+
+            .help-modal-content {
+                padding-bottom: 80px !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BADGE HIỂN THỊ MÃ MÁY & HẠN DÙNG GÓC PHẢI TRÊN -->
+    <div id="licenseInfoBadge" class="license-info-badge" onclick="copyMac()" title="Mã máy & Bản quyền (Bấm để copy mã máy)">
+        <span class="badge-status-dot" id="badgeStatusDot"></span>
+        <div class="badge-content">
+            <div class="badge-row-mac">
+                <span class="badge-label">MÃ MÁY:</span>
+                <b id="badgeMacText" class="badge-val">ĐANG TẢI...</b>
+                <span class="badge-copy-icon" title="Copy mã máy">📋</span>
+            </div>
+            <div class="badge-row-exp" id="badgeExpRow">
+                <span id="badgeExpText">Đang kiểm tra bản quyền...</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="applyBtnContainer"
+        style="display:none; position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 1000000; padding: 10px 25px; background: var(--success); color: white; border-radius: 30px; font-weight: bold; cursor: grab; box-shadow: 0 5px 15px rgba(40,167,69,0.4); font-size: 14px; user-select: none;">
+        ✅ ÁP DỤNG (Chốt)</div>
+    <div id="quickSliderContainer"
+        style="display:none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 95%; max-width: 450px; background: rgba(255,255,255,0.98); padding: 15px; border-radius: 20px; box-shadow: 0 15px 50px rgba(0,0,0,0.4); z-index: 99999999; border: 2px solid var(--primary);">
+        <div id="quickSliderHeader"
+            style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; cursor: grab; padding-bottom: 8px; border-bottom: 1px dashed #ddd;">
+            <b id="quickSliderLabel"
+                style="font-size: 12px; color: #333; text-transform: uppercase; pointer-events: none;">Thông số</b>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button id="btnSliderReset" title="Trả lại giá trị cũ"
+                    style="background: #e67e22; color: #fff; padding: 4px 8px; border-radius: 5px; font-size: 11px; border: none; cursor: pointer;">↺
+                    Trả lại</button>
+                <input type="number" id="quickSliderValueInput" value="0"
+                    style="background: var(--primary); color: #fff; padding: 4px 5px; border-radius: 6px; font-weight: bold; font-size: 14px; width: 60px; text-align: center; border: 1px solid #0056b3; outline: none;">
+            </div>
+            <button onclick="closeQuickSlider()"
+                style="background: #eee; border-radius: 50%; width: 25px; height: 25px; border: none; color: #666; cursor: pointer;">✕</button>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <button id="btnSliderMinus"
+                style="width: 45px; height: 45px; border-radius: 10px; background: #f8f9fa; border: 1px solid #ddd; font-size: 20px; font-weight: bold; color: var(--primary); cursor: pointer;">-</button>
+            <input type="range" id="quickSlider" style="flex: 1; height: 10px; cursor: pointer;">
+            <button id="btnSliderPlus"
+                style="width: 45px; height: 45px; border-radius: 10px; background: #f8f9fa; border: 1px solid #ddd; font-size: 20px; font-weight: bold; color: var(--primary); cursor: pointer;">+</button>
+        </div>
+    </div>
+
+    <div id="unifiedMenuContainer" class="unified-menu-container">
+        <div id="subMenuList" class="sub-menu-list">
+            <div class="sub-menu-item mobile-only-menu-item" onclick="window.openMobileModal('layout'); toggleUnifiedMenu();" style="color: #6c5ce7; font-weight: bold;">⚙️ Bảng Tuỳ Chỉnh</div>
+            <div class="sub-menu-item" onclick="openTemplateManager();">🎨 Quản Lý Mẫu</div>
+            <div class="sub-menu-item" onclick="openSaveTemplateModal(); toggleUnifiedMenu();" style="color: #10b981; font-weight: bold;">💾 Lưu Mẫu Này</div>
+            <div class="sub-menu-item" onclick="toggleExportSubMenu();">💾 Chức Năng Xuất</div>
+            <div id="exportSubMenu"
+                style="display:none; flex-direction:column; gap:8px; align-items:flex-end; margin-right:15px; border-right:2px solid #ddd; padding-right:15px;">
+                <button onclick="downloadSingleImage()" class="btn-mini"
+                    style="background:#17a2b8; border-radius:15px;">🖼️ Lưu 1 Ảnh</button>
+                <button onclick="generateAllImages()" class="btn-mini"
+                    style="background:#28a745; border-radius:15px;">📦 Tải ZIP (Tất cả)</button>
+                <button onclick="exportToPDF()" class="btn-mini" style="background:#e84393; border-radius:15px;">📄 Xuất
+                    PDF</button>
+                <button onclick="printAllPages()" class="btn-mini" style="background:#9b59b6; border-radius:15px;">🖨️
+                    In A4 (Dành cho in)</button>
+                <button onclick="copyCanvas()" class="btn-mini" style="background:#3498db; border-radius:15px;">📋 Copy
+                    Ảnh</button>
+                <button onclick="exportToExcel()" class="btn-mini" style="background:#20c997; border-radius:15px;">📊
+                    Xuất Excel</button>
+            </div>
+            <div class="sub-menu-item" onclick="undo(); toggleUnifiedMenu();" id="btnUndo">↩ Hoàn tác (0)</div>
+        </div>
+        <div class="main-menu-btn" id="unifiedMenuBtn" onclick="toggleUnifiedMenu()" title="Mở Danh Mục Chức Năng">☰
+        </div>
+    </div>
+
+    <!-- NÚT NỔI TUỲ CHỈNH (FAB CHO MOBILE) -->
+    <div id="fabContainer" class="fab-container">
+        <button id="fabBtn" class="fab-btn" onclick="window.toggleMobileSettingsModal()" title="Mở Bảng Tuỳ Chỉnh">
+            ⚙️
+        </button>
+    </div>
+
+    <!-- MODAL QUẢN LÝ MẪU NỘI BỘ (LOCAL PRO TEMPLATE MANAGER) -->
+    <div id="themeModalOverlay" onclick="if(event.target===this) window.closeTemplateManager();">
+        <div id="themeModalContent">
+            <!-- Header bar / Thanh Quản Lý Chung -->
+            <div class="tpl-header-bar">
+                <div class="tpl-header-title">
+                    <span>🎨 QUẢN LÝ MẪU THIẾT KẾ</span>
+                </div>
+                <div class="tpl-header-tools tpl-header-desktop-tools">
+                    <button type="button" class="btn-top-mgr" onclick="document.getElementById('importConfig').click();" title="Nạp file mẫu từ máy tính (.lite hoặc .json) vào bản vẽ">
+                        📂 Nạp File .lite
+                    </button>
+                    <button type="button" class="btn-top-mgr" onclick="exportConfig();" title="Xuất toàn bộ cấu hình thiết kế hiện tại ra file .lite">
+                        💾 Xuất File .lite
+                    </button>
+                    <button type="button" class="btn-top-mgr btn-top-mgr-reset" onclick="resetToDefault();" title="Khôi phục toàn bộ thiết kế về mẫu gốc mặc định">
+                        🔄 Về Gốc
+                    </button>
+                </div>
+                <button type="button" class="tpl-header-close" onclick="window.closeTemplateManager();" title="Đóng">✕</button>
+                <!-- File input nạp .lite dùng chung -->
+                <input type="file" id="importConfig" accept=".json,.lite" style="display:none" onchange="handleImport(event);">
+            </div>
+
+            <!-- THANH ĐIỀU HƯỚNG 2 TAB CHÍNH -->
+            <div class="tpl-main-tabs">
+                <button class="tpl-main-tab-btn active" id="btnTabLocal" onclick="window.switchTplMainTab('local')">
+                    💾 KHO MÁY NỘI BỘ
+                </button>
+                <button class="tpl-main-tab-btn" id="btnTabCloud" onclick="window.switchTplMainTab('cloud')">
+                    ☁️ KHO ĐÁM MÂY & MẪU SẴN
+                </button>
+            </div>
+
+            <!-- TAB 1: KHO MÁY NỘI BỘ (CỘT DANH MỤC TRÁI + LƯỚI PHẢI) -->
+            <div id="tplTabPaneLocal" class="tpl-tab-pane active">
+                <div class="tpl-layout-split">
+                    <!-- NỀN MỜ CHO HỘP TỦ KHI MỞ TRÊN MOBILE -->
+                    <div id="tplDrawerBackdrop" class="tpl-drawer-backdrop" onclick="window.toggleTemplateDrawer(false)"></div>
+
+                    <!-- CỘT TRÁI: SIDEBAR DANH MỤC MẪU (HỘP TỦ TRÊN MOBILE) -->
+                    <div id="tplSidebarCategories" class="tpl-sidebar-categories">
+                        <!-- TAY NẮM HỘP TỦ (LUÔN HIỆN Ở MÉP TRÁI TRÊN MOBILE) -->
+                        <button type="button" id="tplDrawerHandle" class="tpl-drawer-handle" onclick="window.toggleTemplateDrawer()" title="Mở / đóng hộp tủ danh mục">
+                            <span id="tplDrawerHandleIcon" class="tpl-drawer-handle-icon">🌟</span>
+                            <span id="tplDrawerHandleName" class="tpl-drawer-handle-name">Tất cả mẫu</span>
+                            <span id="tplDrawerHandleArrow" class="tpl-drawer-handle-arrow">▶</span>
+                        </button>
+
+                        <div class="tpl-sidebar-header">
+                            <span>📁 DANH MỤC MẪU</span>
+                            <button class="btn-sidebar-add-cat" onclick="window.openCategoryManagerModal()" title="Quản lý danh mục">⚙️ Sửa</button>
+                        </div>
+
+                        <!-- Danh sách các danh mục xếp dọc trên Desktop / Trượt ngang trên Mobile -->
+                        <div id="tplCategoryListSidebar" class="tpl-sidebar-nav">
+                            <!-- Sẽ được render động bởi template-manager.js -->
+                        </div>
+
+                        <div class="tpl-sidebar-footer">
+                            <button class="btn-sidebar-new-cat" onclick="window.openCategoryManagerModal()">
+                                ➕ Thêm Danh Mục
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CỘT PHẢI: KHÔNG GIAN LƯỚI MẪU & CÔNG CỤ -->
+                    <div class="tpl-main-view">
+                        <!-- Thanh Toolbar & Tìm kiếm -->
+                        <div class="tpl-toolbar">
+                            <div class="tpl-search-wrapper" style="flex: 1; min-width: 180px;">
+                                <span class="tpl-search-icon">🔍</span>
+                                <input type="text" id="tplSearchBox" class="tpl-search-input"
+                                       onkeyup="window.handleTplSearchInput(this.value)"
+                                       placeholder="Tìm mẫu local theo tên...">
+                            </div>
+                            <div class="tpl-toolbar-group">
+                                <button class="btn-tpl-save-now" onclick="window.openSaveTemplateModal();">
+                                    <span class="txt-save-full">💾 LƯU MẪU HIỆN TẠI</span>
+                                    <span class="txt-save-short">💾 Lưu Mẫu</span>
+                                </button>
+                                <button class="btn-tpl-tool" onclick="window.exportAllTemplatesBackup();" title="Xuất toàn bộ kho mẫu ra file backup .json">
+                                    📤 Backup
+                                </button>
+                                <button class="btn-tpl-tool" onclick="document.getElementById('importBackupInput').click();" title="Nạp lại kho mẫu từ file backup .json">
+                                    📥 Khôi phục
+                                </button>
+                                <input type="file" id="importBackupInput" accept=".json" style="display:none;" onchange="window.handleImportTemplatesBackup(event)">
+                            </div>
+                        </div>
+
+                        <!-- Banner cảnh báo an toàn dữ liệu (Phương án 2) -->
+                        <div id="tplBackupNotice" class="tpl-backup-notice">
+                            <div class="tpl-notice-content">
+                                <span class="tpl-notice-icon">💡</span>
+                                <span class="tpl-notice-text"><b>Khuyên dùng:</b> Hãy bấm <b>📤 Backup</b> thường xuyên để lưu trữ file ra máy, tránh mất mẫu khi dọn rác/xóa cache trình duyệt!</span>
+                            </div>
+                            <button type="button" class="btn-close-notice" onclick="window.dismissBackupNotice();" title="Đóng thông báo">✕</button>
+                        </div>
+
+                        <!-- Thanh báo danh mục đang chọn -->
+                        <div class="tpl-selected-cat-banner">
+                            <div id="tplSelectedCatTitle" class="tpl-cat-banner-title">
+                                🌟 Tất cả các mẫu
+                            </div>
+                            <div id="tplSelectedCatCount" class="tpl-cat-banner-count">
+                                Đang tải...
+                            </div>
+                        </div>
+
+                        <!-- Lưới hiển thị các thẻ mẫu -->
+                        <div id="localTemplatesGrid" class="tpl-cards-grid">
+                            <!-- Sẽ được render động bởi template-manager.js -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: KHO ĐÁM MÂY & MẪU HỆ THỐNG -->
+            <div id="tplTabPaneCloud" class="tpl-tab-pane" style="display: none;">
+                <div class="tpl-cloud-view">
+                    <!-- KHỐI 1: MẪU GỐC CÓ SẴN (HỆ THỐNG) - MÀU VÀNG AMBER PHÂN BIỆT -->
+                    <div class="tpl-cloud-section tpl-section-builtin">
+                        <div class="tpl-section-header tpl-header-amber">
+                            <div class="tpl-section-title">
+                                <span class="tpl-section-icon">⭐</span>
+                                <span class="tpl-section-text">MẪU GỐC CÓ SẴN (HỆ THỐNG)</span>
+                            </div>
+                            <span class="tpl-section-badge">Dựng sẵn nạp nhanh</span>
+                        </div>
+                        <div class="tpl-section-body">
+                            <select id="builtinTemplates"
+                                onchange="if(typeof loadBuiltinTemplate === 'function') loadBuiltinTemplate(this.value);"
+                                class="tpl-select-custom tpl-select-amber">
+                                <option value="">🌟 CHỌN MẪU MẶC ĐỊNH HỆ THỐNG</option>
+                                <option value="mau_vip_1">🔥 Mẫu 1x1 - 1</option>
+                                <option value="mau_vip_2">💎 Mẫu 1x1 - 2</option>
+                                <option value="mau_vip_3">🌈 Mẫu 2x10 - 1</option>
+                                <option value="mau_vip_4">⭐ Mẫu 2x10 - 2</option>
+                                <option value="mau_vip_5">⚡ Mẫu 2x25 - 1</option>
+                                <option value="mau_vip_6">⚡ Mẫu 3x36 - 1</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- KHỐI 2: KHO MẪU ĐÁM MÂY (TRỰC TUYẾN) - MÀU XANH SKY BLUE PHÂN BIỆT -->
+                    <div class="tpl-cloud-section tpl-section-cloud">
+                        <div class="tpl-section-header tpl-header-sky">
+                            <div class="tpl-section-title">
+                                <span class="tpl-section-icon">☁️</span>
+                                <span class="tpl-section-text">KHO MẪU ĐÁM MÂY TRỰC TUYẾN</span>
+                            </div>
+                            <button type="button" onclick="if(typeof window.loadCloudTemplates==='function') window.loadCloudTemplates();" class="btn-refresh-cloud" title="Tải lại danh sách đám mây">
+                                🔄 Tải lại
+                            </button>
+                        </div>
+                        <div class="tpl-section-body">
+                            <div class="tpl-search-wrapper">
+                                <span class="tpl-search-icon">🔍</span>
+                                <input type="text" id="searchTemplateInput" 
+                                       onkeyup="liveSearch('searchTemplateInput', 'cloudTemplatesList')"
+                                       oninput="liveSearch('searchTemplateInput', 'cloudTemplatesList')"
+                                       placeholder="Tìm mẫu đám mây theo từ khóa (vip, tet, 3x8...)..."
+                                       class="tpl-search-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DANH SÁCH THẺ MẪU ĐÁM MÂY -->
+                    <div id="cloudTemplatesList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-auto-rows: max-content; gap: 12px; overflow-y: auto; padding: 4px;">
+                        <div style="grid-column: 1/-1; text-align: center; font-size: 12px; color: #888; padding: 30px;">Đang tải danh sách mẫu đám mây...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THANH THAO TÁC CỐ ĐỊNH CHÂN MÀN HÌNH (DÀNH CHO MOBI) -->
+            <div class="tpl-mobile-bottom-bar">
+                <button type="button" class="btn-top-mgr" onclick="document.getElementById('importConfig').click();" title="Nạp file mẫu (.lite hoặc .json)">
+                    📂 Nạp File .lite
+                </button>
+                <button type="button" class="btn-top-mgr" onclick="exportConfig();" title="Xuất toàn bộ cấu hình thiết kế ra file .lite">
+                    💾 Xuất File .lite
+                </button>
+                <button type="button" class="btn-top-mgr btn-top-mgr-reset" onclick="resetToDefault();" title="Khôi phục về mẫu gốc mặc định">
+                    🔄 Về Gốc
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PHỤ 1: LƯU MẪU MỚI (CHỌN NHIỀU DANH MỤC) -->
+    <div id="saveTemplateModalOverlay" class="tpl-submodal-overlay" onclick="if(event.target===this) window.closeSaveTemplateModal();">
+        <div class="tpl-submodal-box">
+            <div class="tpl-submodal-header">
+                <span>💾 LƯU MẪU THIẾT KẾ VÀO MÁY</span>
+                <span onclick="window.closeSaveTemplateModal();" style="cursor:pointer; font-size:16px;">✕</span>
+            </div>
+            <div class="tpl-submodal-body">
+                <!-- Thumbnail Preview -->
+                <div style="text-align: center;">
+                    <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 4px;">ẢNH XEM TRƯỚC (THUMBNAIL):</div>
+                    <img id="saveTplThumbPreview" src="" alt="Thumbnail" style="width: 100%; max-height: 220px; aspect-ratio: 1 / 1; object-fit: contain; background: #f8fafc; border-radius: 8px; border: 1px solid #cbd5e1; padding: 6px; box-sizing: border-box;">
+                </div>
+
+                <!-- Tên mẫu -->
+                <div>
+                    <label style="font-size: 12px; font-weight: 700; color: #1e293b; display: block; margin-bottom: 4px;">TÊN MẪU THIẾT KẾ: <span style="color:red;">*</span></label>
+                    <input type="text" id="saveTplNameInput" placeholder="Ví dụ: Bảng Đỏ Tết Viettel 2x10..." 
+                           style="width: 100%; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 600; box-sizing: border-box; outline: none;">
+                </div>
+
+                <!-- Danh mục / Tab (Multi-select) có tích hợp thêm tab mới trực tiếp -->
+                <div style="background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <label style="font-size: 12px; font-weight: 700; color: #1e293b; margin: 0;">🏷️ CHỌN TAB / DANH MỤC (CÓ THỂ CHỌN NHIỀU):</label>
+                    </div>
+                    <div style="font-size: 11px; color: #64748b; margin-bottom: 8px;">Tích chọn các tab phân loại (mẫu sẽ xuất hiện ở tất cả các tab được chọn):</div>
+                    
+                    <!-- Lưới các chip checkbox tab/danh mục -->
+                    <div id="saveTplCategoryList" class="tpl-chips-group" style="margin-bottom: 10px;">
+                        <!-- Sẽ render động các chip checkbox -->
+                    </div>
+
+                    <!-- KHU VỰC THÊM TAB MỚI TRỰC TIẾP TẠI ĐÂY -->
+                    <div style="border-top: 1px dashed #cbd5e1; padding-top: 8px; margin-top: 4px;">
+                        <div style="font-size: 11px; font-weight: 700; color: #0284c7; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+                            <span>➕ THÊM TAB / DANH MỤC MỚI:</span>
+                            <span style="font-size: 10px; color: #64748b; font-weight: normal;">(Tự động chọn cho mẫu sau khi thêm)</span>
+                        </div>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <input type="color" id="quickSaveCatColor" value="#007bff" title="Chọn màu cho tab"
+                                   style="width: 32px; height: 32px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; padding: 0; background: #fff; flex-shrink: 0;">
+                            <input type="text" id="quickSaveCatName" placeholder="Nhập tên tab mới (VD: Mẫu Đơn, Mẫu Tết, Mẫu Viettel...)"
+                                   onkeydown="if(event.key==='Enter'){event.preventDefault(); window.submitQuickAddCatInSaveModal();}"
+                                   style="flex: 1; min-width: 130px; padding: 7px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 12px; font-weight: 600; outline: none; background: #fff;">
+                            <button type="button" onclick="window.submitQuickAddCatInSaveModal();" 
+                                    style="background: #0284c7; color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; white-space: nowrap;">
+                                ➕ Thêm Tab
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Đánh dấu Yêu thích -->
+                <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 8px; padding: 9px 12px; margin-top: 4px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; color: #e11d48; cursor: pointer; margin: 0; user-select: none;">
+                        <input type="checkbox" id="saveTplIsFavorite" style="width: 16px; height: 16px; accent-color: #e11d48; cursor: pointer;">
+                        <span>❤️ Thêm vào Tab Yêu Thích</span>
+                    </label>
+                </div>
+            </div>
+            <div class="tpl-submodal-footer">
+                <button onclick="window.closeSaveTemplateModal();" style="background:#f1f5f9; border:1px solid #cbd5e1; padding:8px 14px; border-radius:6px; cursor:pointer; font-weight:600; font-size:12px;">Hủy Bỏ</button>
+                <button onclick="window.confirmSaveTemplate();" style="background:#10b981; color:#fff; border:none; padding:8px 18px; border-radius:6px; cursor:pointer; font-weight:700; font-size:13px;">✅ XÁC NHẬN LƯU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PHỤ 2: CHỈNH SỬA TÊN & DANH MỤC CỦA MẪU ĐÃ LƯU -->
+    <div id="editTemplateModalOverlay" class="tpl-submodal-overlay" onclick="if(event.target===this) window.closeEditTemplateModal();">
+        <div class="tpl-submodal-box">
+            <div class="tpl-submodal-header">
+                <span>✏️ CHỈNH SỬA MẪU THIẾT KẾ</span>
+                <span onclick="window.closeEditTemplateModal();" style="cursor:pointer; font-size:16px;">✕</span>
+            </div>
+            <div class="tpl-submodal-body">
+                <div>
+                    <label style="font-size: 12px; font-weight: 700; color: #1e293b; display: block; margin-bottom: 4px;">TÊN MẪU:</label>
+                    <input type="text" id="editTplNameInput" 
+                           style="width: 100%; padding: 10px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 13px; font-weight: 600; box-sizing: border-box; outline: none;">
+                </div>
+                <div style="background: #f8fafc; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                    <label style="font-size: 12px; font-weight: 700; color: #1e293b; display: block; margin-bottom: 4px;">🏷️ TAB / DANH MỤC LIÊN KẾT (CÓ THỂ CHỌN NHIỀU):</label>
+                    <div id="editTplCategoryList" class="tpl-chips-group" style="margin-bottom: 10px;">
+                        <!-- Sẽ render động các chip checkbox -->
+                    </div>
+
+                    <!-- KHU VỰC THÊM TAB MỚI TRỰC TIẾP TẠI ĐÂY -->
+                    <div style="border-top: 1px dashed #cbd5e1; padding-top: 8px; margin-top: 4px;">
+                        <div style="font-size: 11px; font-weight: 700; color: #0284c7; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between;">
+                            <span>➕ THÊM TAB / DANH MỤC MỚI:</span>
+                            <span style="font-size: 10px; color: #64748b; font-weight: normal;">(Tự động chọn cho mẫu sau khi thêm)</span>
+                        </div>
+                        <div style="display: flex; gap: 6px; align-items: center;">
+                            <input type="color" id="quickEditCatColor" value="#007bff" title="Chọn màu cho tab"
+                                   style="width: 32px; height: 32px; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; padding: 0; background: #fff; flex-shrink: 0;">
+                            <input type="text" id="quickEditCatName" placeholder="Nhập tên tab mới..."
+                                   onkeydown="if(event.key==='Enter'){event.preventDefault(); window.submitQuickAddCatInEditModal();}"
+                                   style="flex: 1; min-width: 130px; padding: 7px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 12px; font-weight: 600; outline: none; background: #fff;">
+                            <button type="button" onclick="window.submitQuickAddCatInEditModal();" 
+                                    style="background: #0284c7; color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-weight: 700; font-size: 12px; cursor: pointer; white-space: nowrap;">
+                                ➕ Thêm Tab
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Đánh dấu Yêu thích -->
+                <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 8px; padding: 9px 12px; margin-top: 10px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 700; color: #e11d48; cursor: pointer; margin: 0; user-select: none;">
+                        <input type="checkbox" id="editTplIsFavorite" style="width: 16px; height: 16px; accent-color: #e11d48; cursor: pointer;">
+                        <span>❤️ Thêm vào Tab Yêu Thích</span>
+                    </label>
+                </div>
+            </div>
+            <div class="tpl-submodal-footer">
+                <button onclick="window.closeEditTemplateModal();" style="background:#f1f5f9; border:1px solid #cbd5e1; padding:8px 14px; border-radius:6px; cursor:pointer; font-weight:600; font-size:12px;">Hủy</button>
+                <button onclick="window.confirmEditTemplate();" style="background:#007bff; color:#fff; border:none; padding:8px 18px; border-radius:6px; cursor:pointer; font-weight:700; font-size:13px;">💾 CẬP NHẬT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PHỤ 3: QUẢN LÝ DANH MỤC (THÊM / ĐỔI TÊN / XÓA) -->
+    <div id="categoryManagerModalOverlay" class="tpl-submodal-overlay" onclick="if(event.target===this) window.closeCategoryManagerModal();">
+        <div class="tpl-submodal-box">
+            <div class="tpl-submodal-header">
+                <span>🏷️ QUẢN LÝ DANH SÁCH DANH MỤC</span>
+                <span onclick="window.closeCategoryManagerModal();" style="cursor:pointer; font-size:16px;">✕</span>
+            </div>
+            <div class="tpl-submodal-body">
+                <!-- Thêm mới danh mục -->
+                <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                    <div style="font-size: 11px; font-weight: 700; color: #334155; margin-bottom: 6px;">➕ TẠO THÊM DANH MỤC MỚI:</div>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <input type="color" id="newCatColorInput" value="#007bff" style="width:32px; height:32px; border:none; border-radius:6px; cursor:pointer; padding:0;">
+                        <input type="text" id="newCatNameInput" placeholder="Nhập tên (VD: Mẫu Đơn, Mẫu Tết...)"
+                               style="flex: 1; padding: 8px 10px; border: 1.5px solid #cbd5e1; border-radius: 6px; font-size: 12px; font-weight: 600; outline: none;">
+                        <button onclick="window.addNewCategorySubmit();" style="background:#10b981; color:#fff; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; font-weight:700; font-size:12px;">Thêm</button>
+                    </div>
+                </div>
+
+                <div style="font-size: 11px; font-weight: 700; color: #64748b; margin-top: 4px;">DANH SÁCH DANH MỤC HIỆN CÓ:</div>
+                <div id="categoryManagerList" class="cat-mgr-list">
+                    <!-- Sẽ render động danh sách danh mục -->
+                </div>
+            </div>
+            <div class="tpl-submodal-footer">
+                <button onclick="window.closeCategoryManagerModal();" style="background:#007bff; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-weight:700; font-size:12px;">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PHỤ 4: HỎI TẢI FILE .LITE DỰ PHÒNG SAU KHI LƯU MẪU -->
+    <div id="saveLiteConfirmModalOverlay" class="tpl-submodal-overlay" style="z-index: 3000010;" onclick="if(event.target===this) window.closeSaveLiteConfirmModal();">
+        <div class="tpl-submodal-box" style="max-width: 430px; text-align: center; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.35);">
+            <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; padding: 22px 20px 18px 20px;">
+                <div style="font-size: 42px; margin-bottom: 6px; line-height: 1;">🎉</div>
+                <div style="font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">ĐÃ LƯU MẪU THÀNH CÔNG!</div>
+            </div>
+            <div class="tpl-submodal-body" style="padding: 20px; gap: 14px;">
+                <div id="saveLiteConfirmTplName" style="font-size: 14px; font-weight: 700; color: #1e293b; background: #f1f5f9; padding: 10px 14px; border-radius: 8px; border: 1.5px dashed #cbd5e1; word-break: break-word;">
+                    📁 Mẫu Thiết Kế
+                </div>
+                <p style="margin: 0; font-size: 13.5px; color: #475569; line-height: 1.55;">
+                    Mẫu đã được lưu an toàn vào <b>Kho Máy Nội Bộ</b>.<br>
+                    Bạn có muốn <b>tải thêm file dự phòng (.lite)</b> về máy không?
+                </p>
+                <div style="font-size: 11.5px; color: #64748b; background: #fffbeb; border: 1px solid #fde68a; padding: 9px 12px; border-radius: 8px; text-align: left; line-height: 1.45;">
+                    💡 <i>File .lite giúp bạn gửi mẫu cho người khác hoặc nạp lại trên các thiết bị khác bất cứ lúc nào.</i>
+                </div>
+            </div>
+            <div class="tpl-submodal-footer" style="padding: 14px 20px; justify-content: stretch; gap: 10px; background: #f8fafc;">
+                <button type="button" onclick="window.closeSaveLiteConfirmModal();" 
+                        style="flex: 1; background: #f1f5f9; border: 1.5px solid #cbd5e1; color: #64748b; padding: 10px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.2s;">
+                    ✕ Bỏ Qua
+                </button>
+                <button type="button" id="btnDownloadLiteFromConfirm" onclick="window.confirmDownloadLiteAfterSave();" 
+                        style="flex: 1.5; background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35); transition: 0.2s;">
+                    📥 TẢI FILE .LITE
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="column col-data">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h3 style="margin:0;">1. DANH SÁCH SIM</h3><span id="saveStatus">✔ Đã lưu</span>
+        </div>
+        <select id="filterMenh" onchange="if(typeof updatePreviewImmediate==='function') updatePreviewImmediate();"
+            style="width:100%; padding:10px; border:2px solid var(--primary); border-radius:6px; font-weight:bold; color:var(--primary); margin-bottom:10px;">
+            <option value="ALL">🌈 Lọc Mệnh: TẤT CẢ SIM</option>
+            <option value="KIM">🤍 Chỉ hiện Mệnh KIM</option>
+            <option value="MỘC">💚 Chỉ hiện Mệnh MỘC</option>
+            <option value="THỦY">💙 Chỉ hiện Mệnh THỦY</option>
+            <option value="HỎA">❤ Chỉ hiện Mệnh HỎA</option>
+            <option value="THỔ">🤎 Chỉ hiện Mệnh THỔ</option>
+        </select>
+        <textarea id="list" onclick="if(window.innerWidth <= 768) window.openSimListModal()">0909.123.456|1000000000|VIP|Mới&#10;0988.88.88.88|50000000|Thường|Xả hàng</textarea>
+        <div style="display: flex; margin-top: 10px; gap: 8px;">
+            <button onclick="pasteList()" class="btn-success" style="flex:1; padding:12px;">📋 Dán SIM</button>
+            <button
+                onclick="document.getElementById('list').value=''; if(typeof updatePreviewImmediate==='function') updatePreviewImmediate(); if(typeof window.debouncedSave==='function') window.debouncedSave();"
+                class="btn-danger" style="flex:1; padding:12px;">🗑️ Xóa hết</button>
+        </div>
+    </div>
+
+    <div class="column col-preview" id="previewColumn">
+        <div class="preview-header"
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); margin-bottom: 10px; padding-bottom: 5px;">
+            <h3 style="margin:0; border:none;">2. BẢN VẼ FINAL</h3>
+            <div style="font-size:11px; color:red; font-weight:bold;" id="canvasSizeDisplay">Size: 0x0 px</div>
+        </div>
+
+        <div class="zoom-bar"
+            style="display: flex; gap: 5px; margin-bottom: 10px; background: #e8f4ff; padding: 5px; border-radius: 4px; align-items:center;">
+            <button id="toggleFullBtn" onclick="toggleFullscreen()"
+                style="background:#34495e; color:#fff; padding:6px 12px; border:none; border-radius:4px; cursor:pointer;">🔲
+                TOÀN MÀN HÌNH</button>
+            <div style="flex-grow:1;"></div>
+            <button onclick="fitZoom()"
+                style="background:#fff; border:1px solid #ccc; border-radius:4px; padding:4px 8px; cursor:pointer;">Fit</button>
+            <input type="range" id="zoomSlider" min="10" max="300" value="100" oninput="applyZoom(this.value)"
+                style="width: 80px; cursor:pointer;">
+            <span id="zoomVal" style="font-weight:bold; font-size:12px; width:40px; display:inline-block;">100%</span>
+        </div>
+
+        <div id="canvasWrapper"><canvas id="preview"></canvas></div>
+
+        <div class="preview-pagination">
+            <button class="btn-page-nav" onclick="prevStep()">◀ Lùi</button>
+            <span class="page-indicator">Trang
+                <input type="number" id="pageInput" value="1" onchange="goToPage(this.value)"> / <span id="totalPagesText">1</span>
+            </span>
+            <button class="btn-page-nav" onclick="nextStep()">Tới ▶</button>
+        </div>
+
+        <div class="preview-actions">
+            <button class="btn-preview-action btn-copy" onclick="copyCanvas()">📋 Copy</button>
+            <button class="btn-preview-action btn-save-one" onclick="downloadSingleImage()">💾 Lưu 1 Ảnh</button>
+            <button id="btnShareCanvas" class="btn-preview-action btn-share" onclick="shareCanvasImage()">📤 Chia Sẻ</button>
+            <button id="btnPrintA4" class="btn-preview-action btn-print-a4" onclick="printAllPages()">🖨️ In A4</button>
+            <button class="btn-preview-action btn-zip" onclick="generateAllImages()">📦 Tải ZIP</button>
+        </div>
+    </div>
+
+    <div class="column col-settings">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('tab-layout', this)">1. Lưới & Cột</button>
+            <button class="tab-btn" onclick="switchTab('tab-colheader', this)">2. Tiêu Đề</button>
+            <button class="tab-btn" onclick="switchTab('tab-globaltext', this)">3. Chữ Góc</button>
+            <button class="tab-btn" onclick="switchTab('tab-general', this)">4. Nền & In</button>
+        </div>
+        <div id="dynamic-tabs-container"></div>
+    </div>
+
+
+    <div id="mobileSettingModal">
+
+        <div class="mobile-modal-content">
+            <div class="mobile-modal-header-area">
+                <div class="mobile-modal-drag-handle" onclick="window.closeMobileModal()" title="Bấm để đóng bảng tuỳ chỉnh"></div>
+                <div class="mobile-modal-top-row">
+                    <span id="mobileModalTitle" class="mobile-modal-title">⚙️ Cài Đặt</span>
+                    <button class="mobile-modal-close-btn" onclick="window.closeMobileModal()" title="Đóng bảng cài đặt">✕</button>
+                </div>
+                <div id="mobileTabMenu">
+                    <button class="m-tab-lvl1" id="mTab-tab-layout" onclick="openMobileModal('layout')">&#128202;
+                        Lưới</button>
+                    <button class="m-tab-lvl1" id="mTab-tab-colheader" onclick="openMobileModal('header')">&#127991;
+                        Tiêu Đề</button>
+                    <button class="m-tab-lvl1" id="mTab-tab-globaltext"
+                        onclick="openMobileModal('globaltext')">&#128221; Chữ Góc</button>
+                    <button class="m-tab-lvl1" id="mTab-tab-general" onclick="openMobileModal('general')">&#128444;
+                        Nền</button>
+                </div>
+            </div>
+            <div class="mobile-modal-body" id="mobileModalBody"></div>
+        </div>
+    </div>
+
+    <div id="drmOverlay">
+        <div class="drm-box">
+            <h2>⚠ PHẦN MỀM ĐÃ BỊ KHÓA</h2>
+            <p style="font-size:13.5px; color:#555; margin-bottom:12px; line-height:1.5;">
+                Vui lòng gửi <b>Mã Máy</b> này cho quản trị viên để được kích hoạt bản quyền trực tuyến:
+            </p>
+            <div class="drm-mac" id="displayMac">ĐANG TẠO MÃ...</div>
+            <script>
+                (function() {
+                    try {
+                        var k = 'SYSTEM_LOG_DATA_CACHED';
+                        var s = localStorage.getItem(k);
+                        var pos = [2, 5, 9, 14, 20, 27, 35, 44, 54, 59];
+                        if (!s || s.length < 60) {
+                            var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+                            var raw = "";
+                            for (var i = 0; i < 10; i++) raw += chars.charAt(Math.floor(Math.random() * chars.length));
+                            var junk = "";
+                            for (var i = 0; i < 60; i++) junk += chars.charAt(Math.floor(Math.random() * chars.length));
+                            var arr = junk.split("");
+                            for (var i = 0; i < 10; i++) arr[pos[i]] = raw[i];
+                            s = arr.join("");
+                            localStorage.setItem(k, s);
+                        }
+                        var id = pos.map(function(p) { return s[p]; }).join('');
+                        var el = document.getElementById('displayMac');
+                        if (el) el.innerText = id;
+                        var b = document.getElementById('badgeMacText');
+                        if (b) b.innerText = id;
+                    } catch (e) {}
+                })();
+            </script>
+            <button onclick="copyMac()" class="drm-btn" style="background:#007bff; margin-bottom:12px;">📋 COPY MÃ MÁY NÀY</button>
+            <button onclick="checkLicense(true)" class="drm-btn" style="background:#27ae60; margin-bottom:12px;">🔄 KIỂM TRA LẠI BẢN QUYỀN (ONLINE)</button>
+            <div id="drmMessage" style="margin-top: 10px;"></div>
+        </div>
+    </div>
+    <div id="printArea"></div>
+
+    <script src="https://stuk.github.io/jszip/dist/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <div id="modal-bg-cloud"
+        onclick="if(event.target === this) this.style.display = 'none'"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000000; justify-content:center; align-items:center; padding: 15px; box-sizing: border-box; backdrop-filter: blur(3px);">
+        <div
+            style="background:#fff; width:100%; max-width:600px; border-radius:15px; padding:20px; box-shadow:0 15px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; position: relative;">
+
+            <div
+                style="display:flex; justify-content:space-between; align-items: center; margin-bottom:15px; border-bottom:2px solid #007bff; padding-bottom:10px;">
+                <h3 style="margin:0; color:#007bff; font-size: 18px;">☁️ KHO ẢNH DRIVE (HASHTAG)</h3>
+                <button onclick="document.getElementById('modal-bg-cloud').style.display='none'"
+                    style="border:none; background:#ff4757; color:white; width: 30px; height: 30px; border-radius: 50%; cursor:pointer; font-weight: bold; line-height: 1;">✕</button>
+            </div>
+
+            <div style="position: relative; margin-bottom: 15px;">
+                <input type="text" id="cloudSearchBox" 
+                    onkeyup="liveSearch('cloudSearchBox', 'bgCloudList')"
+                    oninput="liveSearch('cloudSearchBox', 'bgCloudList')"
+                    placeholder="🔍 Gõ hashtag tìm nhanh (VD: #Tet, #Vang)..."
+                    style="width:100%; padding:12px 15px; border:2px solid #007bff; border-radius:25px; font-weight:bold; box-sizing:border-box; outline: none; transition: 0.3s; font-size: 14px;">
+            </div>
+
+            <div id="bgCloudList"
+                style="display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:12px; max-height:450px; overflow-y:auto; padding:5px; scroll-behavior: smooth;">
+            </div>
+
+            <div style="text-align: center; margin-top: 10px; font-size: 11px; color: #888;">
+                💡 Mẹo: Gõ hashtag có dấu # để tìm chính xác hơn
+            </div>
+        </div>
+    </div>
+
+    <div id="globalLoading">
+        <div class="loading-box">
+            <div class="loader-double"></div>
+            <div class="loading-content">
+                <div id="loadingAction"
+                    style="font-size: 13px; color: #aaa; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px;">
+                    Hệ thống đang</div>
+                <div id="loadingText" style="font-size: 18px; color: #fff; font-weight: bold; min-height: 24px;">Xử lý
+                    dữ liệu</div>
+                <div class="progress-dots">
+                    <span>.</span><span>.</span><span>.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="globalFontInput" style="display:none" accept=".ttf,.otf,.woff,.woff2"
+        onchange="handleGlobalFontUpload(event)">
+
+    <div id="helpModalOverlay" class="help-modal-overlay" onclick="if(event.target === this) closeHelpModal()">
+        <div class="help-modal-content">
+            <span class="help-close" onclick="closeHelpModal()">✖</span>
+            <h2 style="color:#2c3e50; border-bottom:2px solid #3498db; padding-bottom:10px;">📖 HƯỚNG DẪN SỬ DỤNG</h2>
+            <div style="line-height:1.6; font-size:14px; margin-top:15px;">
+                <p><b>1. Nhập liệu Sim:</b> Dán danh sách sim vào ô bên trái theo định dạng (Số|Giá|Mệnh|Mạng|Dữ liệu
+                    1|Dữ liệu 2).</p>
+                <p><b>2. Thiết kế Lưới:</b> Chỉnh sửa kích thước, số cột/dòng, màu sắc và độ dày viền tại tab "Lưới &
+                    Cột".</p>
+                <p><b>3. Phối màu thông minh:</b> Sử dụng nút "🎨 Phối màu" tại các ô màu để xem các gợi ý tông màu
+                    chuyên nghiệp.</p>
+                <p><b>4. Xuất ảnh:</b> Sử dụng menu ở góc dưới bên phải để tải ảnh đơn, file ZIP hoặc file PDF.</p>
+                <p><b>5. Quản lý mẫu:</b> Bạn có thể lưu mẫu thiết kế vào file .lite hoặc nạp từ kho mây đám mây.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobileSimListModal" onclick="if(event.target === this) window.closeSimListModal()">
+        <div class="sim-modal-header">
+            <b style="font-size: 16px;">📝 NHẬP DANH SÁCH SIM</b>
+            <span onclick="window.closeSimListModal()" style="cursor: pointer; font-size: 24px; color: #ff4757;">✖</span>
+        </div>
+        <div class="sim-modal-toolbar">
+            <button class="btn-sim-action btn-sim-paste" onclick="window.pasteToMobileList()">📋 DÁN SIM</button>
+            <button class="btn-sim-action btn-sim-clear" onclick="document.getElementById('mobileListArea').value = ''">🗑️ XÓA</button>
+            <button class="btn-sim-action btn-sim-apply" onclick="window.applySimList()">✅ XÁC NHẬN</button>
+        </div>
+        <div class="sim-modal-body">
+            <textarea id="mobileListArea" placeholder="Dán danh sách SIM tại đây..."></textarea>
+        </div>
+    </div>
+    
+    <!-- Scripts loaded from external files -->
+    <script src="js/template-manager.js?v=2.2"></script>
+    <script src="js/main.js?v=2.2"></script>
+</body>
+
+</html>
