@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3.0">
+    <link rel="stylesheet" href="css/style.css?v=3.6">
     <script src="js/configs.js?v=2.5"></script>
     <style>
         /* CSS GIAO DIỆN PRO-BOX MỚI TỪ BẢN THAM KHẢO */
@@ -1728,6 +1728,15 @@
     </div>
 
     <div class="column col-settings">
+        <!-- THANH HEADER CHO CHẾ ĐỘ MOBILE FULLSCREEN (Chỉ hiện khi mở rộng Full trên Mobile) -->
+        <div class="mobile-full-header" id="mobileFullHeader">
+            <div class="mobile-full-header-title">⚙️ Tuỳ Chỉnh</div>
+            <div class="mobile-full-header-actions">
+                <button type="button" class="btn-return-mobile-sheet" onclick="window.closeMobileFullSettings(true)" title="Thu nhỏ về thanh tuỳ chọn ban đầu">
+                    <span>⤓</span> Thu nhỏ
+                </button>
+            </div>
+        </div>
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('tab-layout', this)">1. Lưới & Cột</button>
             <button class="tab-btn" onclick="switchTab('tab-colheader', this)">2. Tiêu Đề</button>
@@ -1745,7 +1754,12 @@
                 <div class="mobile-modal-drag-handle" onclick="window.closeMobileModal()" title="Bấm để đóng bảng tuỳ chỉnh"></div>
                 <div class="mobile-modal-top-row">
                     <span id="mobileModalTitle" class="mobile-modal-title">⚙️ Cài Đặt</span>
-                    <button class="mobile-modal-close-btn" onclick="window.closeMobileModal()" title="Đóng bảng cài đặt">✕</button>
+                    <div class="mobile-modal-top-actions">
+                        <button type="button" id="btnMobileFull" class="btn-mobile-full" onclick="window.openMobileFullSettings()" title="Mở rộng toàn màn hình đầy đủ tính năng">
+                            <span class="btn-full-icon">⛶</span> Full
+                        </button>
+                        <button class="mobile-modal-close-btn" onclick="window.closeMobileModal()" title="Đóng bảng cài đặt">✕</button>
+                    </div>
                 </div>
                 <div id="mobileTabMenu">
                     <button class="m-tab-lvl1" id="mTab-tab-layout" onclick="openMobileModal('layout')">&#128202;
@@ -1888,7 +1902,7 @@
     
     <!-- Scripts loaded from external files -->
     <script src="js/template-manager.js?v=3.0"></script>
-    <script src="js/main.js?v=3.0"></script>
+    <script src="js/main.js?v=3.6"></script>
 </body>
 
 </html>
