@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3.8">
+    <link rel="stylesheet" href="css/style.css?v=3.9">
     <script src="js/configs.js?v=2.5"></script>
     <style>
         /* CSS GIAO DIỆN PRO-BOX MỚI TỪ BẢN THAM KHẢO */
@@ -1222,7 +1222,7 @@
                     <button type="button" class="btn-drawer-action btn-drawer-copy" onclick="copyMac()">
                         📋 Sao Chép Mã Máy
                     </button>
-                    <button type="button" class="btn-drawer-action btn-drawer-check" onclick="window.checkLicense(true)" title="Kiểm tra lại bản quyền trực tuyến">
+                    <button type="button" id="btnDrawerCheckLicense" class="btn-drawer-action btn-drawer-check" onclick="window.checkLicense(true)" title="Kiểm tra lại bản quyền trực tuyến">
                         🔄 Kiểm Tra Lại
                     </button>
                 </div>
@@ -1805,6 +1805,20 @@
                         if (el) el.innerText = id;
                         var b = document.getElementById('badgeMacText');
                         if (b) b.innerText = id;
+
+                        // Kiểm tra cache hôm nay: Nếu đã xác thực thì ẩn overlay ngay lập tức
+                        var _now = new Date();
+                        var _td = _now.getFullYear() + '-' + String(_now.getMonth() + 1).padStart(2, '0') + '-' + String(_now.getDate()).padStart(2, '0');
+                        if (localStorage.getItem('LAST_LICENSE_CHECK_DATE') === _td) {
+                            try {
+                                var _cache = JSON.parse(localStorage.getItem('CACHED_LICENSE_DATA'));
+                                if (_cache && _cache.success) {
+                                    var _ov = document.getElementById('drmOverlay');
+                                    if (_ov) _ov.style.display = 'none';
+                                    sessionStorage.setItem('CURRENT_SESSION_ACTIVE', 'true');
+                                }
+                            } catch(e) {}
+                        }
                     } catch (e) {}
                 })();
             </script>
@@ -1897,27 +1911,27 @@
         </div>
         <div class="sim-modal-body">
             <textarea id="mobileListArea" placeholder="Dán danh sách SIM tại đây..."></textarea>
-    <!-- PRELOAD GOOGLE WEBFONTS ĐỂ CANVAS VẼ ĐƯỢC NGAY LẬP TỨC TRÊN MOBILE & PC -->
+    <!-- PRELOAD GOOGLE WEBFONTS ĐỂ CANVAS VẼ ĐƯỢC NGAY LẬP TỨC TRÊN MOBILE & PC (BAO GỒM CẢ BOLD VÀ REGULAR) -->
     <div id="fontPreloadCache" aria-hidden="true" style="position:fixed; left:-9999px; top:-9999px; opacity:0; pointer-events:none; font-size:1px;">
-        <span style="font-family:'Dancing Script'">A</span>
-        <span style="font-family:'Montserrat'">A</span>
-        <span style="font-family:'Oswald'">A</span>
-        <span style="font-family:'Pattaya'">A</span>
-        <span style="font-family:'Roboto'">A</span>
-        <span style="font-family:'Inter'">A</span>
-        <span style="font-family:'Outfit'">A</span>
-        <span style="font-family:'Playfair Display'">A</span>
-        <span style="font-family:'Bungee'">A</span>
-        <span style="font-family:'Lobster'">A</span>
-        <span style="font-family:'Pacifico'">A</span>
-        <span style="font-family:'Saira Stencil One'">A</span>
-        <span style="font-family:'Charm'">A</span>
-        <span style="font-family:'Sedgwick Ave Display'">A</span>
+        <span style="font-family:'Dancing Script'">A</span><b style="font-family:'Dancing Script'">A</b>
+        <span style="font-family:'Montserrat'">A</span><b style="font-family:'Montserrat'">A</b>
+        <span style="font-family:'Oswald'">A</span><b style="font-family:'Oswald'">A</b>
+        <span style="font-family:'Pattaya'">A</span><b style="font-family:'Pattaya'">A</b>
+        <span style="font-family:'Roboto'">A</span><b style="font-family:'Roboto'">A</b>
+        <span style="font-family:'Inter'">A</span><b style="font-family:'Inter'">A</b>
+        <span style="font-family:'Outfit'">A</span><b style="font-family:'Outfit'">A</b>
+        <span style="font-family:'Playfair Display'">A</span><b style="font-family:'Playfair Display'">A</b>
+        <span style="font-family:'Bungee'">A</span><b style="font-family:'Bungee'">A</b>
+        <span style="font-family:'Lobster'">A</span><b style="font-family:'Lobster'">A</b>
+        <span style="font-family:'Pacifico'">A</span><b style="font-family:'Pacifico'">A</b>
+        <span style="font-family:'Saira Stencil One'">A</span><b style="font-family:'Saira Stencil One'">A</b>
+        <span style="font-family:'Charm'">A</span><b style="font-family:'Charm'">A</b>
+        <span style="font-family:'Sedgwick Ave Display'">A</span><b style="font-family:'Sedgwick Ave Display'">A</b>
     </div>
 
     <!-- Scripts loaded from external files -->
     <script src="js/template-manager.js?v=3.0"></script>
-    <script src="js/main.js?v=3.8"></script>
+    <script src="js/main.js?v=4.0"></script>
 </body>
 
 </html>

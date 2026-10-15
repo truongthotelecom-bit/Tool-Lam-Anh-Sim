@@ -1,5 +1,5 @@
 // Service Worker cho Tool Bảng Số VIP (PWA Standalone)
-const CACHE_NAME = 'bang-so-vip-v16';
+const CACHE_NAME = 'bang-so-vip-v18';
 const STATIC_ASSETS = [
   './index.html',
   'index.html',

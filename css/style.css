@@ -519,6 +519,14 @@
         color: #ffffff;
     }
 
+    /* KHI BẢN QUYỀN ĐÃ KÍCH HOẠT THÀNH CÔNG: ẨN HOÀN TOÀN NÚT KIỂM TRA LẠI (TRÁNH BẤM LẦN 2 BỊ KHÓA) */
+    #licenseDrawer.is-active #btnDrawerCheckLicense,
+    #licenseDrawer.is-active .btn-drawer-check,
+    .drawer-btn-group.is-active .btn-drawer-check,
+    .license-drawer.is-active .btn-drawer-check {
+        display: none !important;
+    }
+
     /* CHẤM TRẠNG THÁI STATUS DOT */
     .badge-status-dot {
         width: 9px;
