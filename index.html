@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3.6">
+    <link rel="stylesheet" href="css/style.css?v=3.8">
     <script src="js/configs.js?v=2.5"></script>
     <style>
         /* CSS GIAO DIỆN PRO-BOX MỚI TỪ BẢN THAM KHẢO */
@@ -1820,7 +1820,7 @@
 
     <div id="modal-bg-cloud"
         onclick="if(event.target === this) this.style.display = 'none'"
-        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000000; justify-content:center; align-items:center; padding: 15px; box-sizing: border-box; backdrop-filter: blur(3px);">
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:30000000; justify-content:center; align-items:center; padding: 15px; box-sizing: border-box; backdrop-filter: blur(3px);">
         <div
             style="background:#fff; width:100%; max-width:600px; border-radius:15px; padding:20px; box-shadow:0 15px 40px rgba(0,0,0,0.5); display: flex; flex-direction: column; position: relative;">
 
@@ -1897,12 +1897,27 @@
         </div>
         <div class="sim-modal-body">
             <textarea id="mobileListArea" placeholder="Dán danh sách SIM tại đây..."></textarea>
-        </div>
+    <!-- PRELOAD GOOGLE WEBFONTS ĐỂ CANVAS VẼ ĐƯỢC NGAY LẬP TỨC TRÊN MOBILE & PC -->
+    <div id="fontPreloadCache" aria-hidden="true" style="position:fixed; left:-9999px; top:-9999px; opacity:0; pointer-events:none; font-size:1px;">
+        <span style="font-family:'Dancing Script'">A</span>
+        <span style="font-family:'Montserrat'">A</span>
+        <span style="font-family:'Oswald'">A</span>
+        <span style="font-family:'Pattaya'">A</span>
+        <span style="font-family:'Roboto'">A</span>
+        <span style="font-family:'Inter'">A</span>
+        <span style="font-family:'Outfit'">A</span>
+        <span style="font-family:'Playfair Display'">A</span>
+        <span style="font-family:'Bungee'">A</span>
+        <span style="font-family:'Lobster'">A</span>
+        <span style="font-family:'Pacifico'">A</span>
+        <span style="font-family:'Saira Stencil One'">A</span>
+        <span style="font-family:'Charm'">A</span>
+        <span style="font-family:'Sedgwick Ave Display'">A</span>
     </div>
-    
+
     <!-- Scripts loaded from external files -->
     <script src="js/template-manager.js?v=3.0"></script>
-    <script src="js/main.js?v=3.6"></script>
+    <script src="js/main.js?v=3.8"></script>
 </body>
 
 </html>

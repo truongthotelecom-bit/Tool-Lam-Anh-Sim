@@ -840,9 +840,8 @@
         z-index: 20000000 !important;
         background: #ffffff !important;
         flex-direction: column !important;
-        overflow-y: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        padding: 0 0 100px 0 !important;
+        overflow: hidden !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
         animation: slideUpMobileFull 0.25s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
     }
@@ -854,8 +853,9 @@
         padding: 12px 16px !important;
         background: #1e293b !important;
         color: #ffffff !important;
-        position: sticky !important;
-        top: 0 !important;
+        position: relative !important;
+        top: auto !important;
+        flex-shrink: 0 !important;
         z-index: 1000 !important;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15) !important;
         border-bottom: 2px solid var(--primary) !important;
@@ -918,8 +918,9 @@
     }
 
     .col-settings.mobile-full-active .tabs {
-        position: sticky !important;
-        top: 50px !important;
+        position: relative !important;
+        top: auto !important;
+        flex-shrink: 0 !important;
         z-index: 999 !important;
         background: #f1f5f9 !important;
         padding: 8px 10px !important;
@@ -942,8 +943,20 @@
     }
 
     .col-settings.mobile-full-active #dynamic-tabs-container {
-        padding: 10px 12px !important;
-        flex: 1 !important;
+        padding: 10px 12px 120px 12px !important;
+        flex: 1 1 0 !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Đảm bảo khi đang mở Full, modal nửa màn hình mobileSettingModal hoàn toàn ẩn */
+    body.mobile-full-settings-open #mobileSettingModal,
+    .col-settings.mobile-full-active ~ #mobileSettingModal {
+        display: none !important;
+        pointer-events: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
     }
 
     /* Sub-tabs và sub-sub-tabs cuộn ngang mượt mà */
@@ -1040,13 +1053,21 @@
     top: 0; left: 0;
     width: 100vw; height: 100vh;
     background: rgba(15, 23, 42, 0.75);
-    z-index: 3000000;
+    z-index: 30000000 !important;
     justify-content: center;
     align-items: center;
     padding: 15px;
     box-sizing: border-box;
     backdrop-filter: blur(4px);
     animation: fadeInOverlay 0.2s ease-out;
+}
+
+#modal-bg-cloud {
+    z-index: 30000000 !important;
+}
+
+.tpl-submodal-overlay {
+    z-index: 35000000 !important;
 }
 
 #themeModalContent {
