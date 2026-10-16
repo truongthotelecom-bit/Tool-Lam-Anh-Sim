@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3.9">
+    <link rel="stylesheet" href="css/style.css?v=4.0">
     <script src="js/configs.js?v=2.5"></script>
     <style>
         /* CSS GIAO DIỆN PRO-BOX MỚI TỪ BẢN THAM KHẢO */
@@ -215,9 +215,10 @@
             font-weight: bold !important;
         }
         body.studio-mode:not(.mobile-modal-open) .preview-pagination input[type="number"] {
-            width: 32px !important;
-            font-size: 11.5px !important;
-            padding: 2px !important;
+            width: 48px !important;
+            height: 26px !important;
+            font-size: 13px !important;
+            padding: 1px 2px !important;
             text-align: center !important;
         }
         body.studio-mode:not(.mobile-modal-open) .preview-actions {
@@ -1711,11 +1712,15 @@
         <div id="canvasWrapper"><canvas id="preview"></canvas></div>
 
         <div class="preview-pagination">
-            <button class="btn-page-nav" onclick="prevStep()">◀ Lùi</button>
+            <button class="btn-page-nav" onclick="prevStep()" title="Lùi 1 trang">◀ Lùi</button>
             <span class="page-indicator">Trang
-                <input type="number" id="pageInput" value="1" onchange="goToPage(this.value)"> / <span id="totalPagesText">1</span>
+                <input type="number" id="pageInput" value="1" min="1" step="1" inputmode="numeric" autocomplete="off"
+                    onkeydown="if(event.key==='Enter'){clearTimeout(window.pageDebounce);window.goToPage(this.value);this.blur();}"
+                    onchange="clearTimeout(window.pageDebounce);window.goToPage(this.value);"
+                    oninput="window.handlePageInput(this)"
+                    title="Nhập số trang cần xem rồi nhấn Enter"> / <span id="totalPagesText">1</span>
             </span>
-            <button class="btn-page-nav" onclick="nextStep()">Tới ▶</button>
+            <button class="btn-page-nav" onclick="nextStep()" title="Tới 1 trang">Tới ▶</button>
         </div>
 
         <div class="preview-actions">
@@ -1931,7 +1936,7 @@
 
     <!-- Scripts loaded from external files -->
     <script src="js/template-manager.js?v=3.0"></script>
-    <script src="js/main.js?v=4.0"></script>
+    <script src="js/main.js?v=4.2"></script>
 </body>
 
 </html>
