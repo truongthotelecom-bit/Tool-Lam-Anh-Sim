@@ -348,16 +348,6 @@
             .mobile-only-menu-item {
                 display: none !important;
             }
-            .btn-settings-open {
-                display: none !important;
-            }
-        }
-        .btn-preview-action.btn-settings-open {
-            background: linear-gradient(135deg, #6c5ce7, #8e44ad) !important;
-            color: #ffffff !important;
-            font-weight: 700 !important;
-            border: none !important;
-            box-shadow: 0 2px 6px rgba(108, 92, 231, 0.35) !important;
         }
 
 
@@ -1731,7 +1721,6 @@
         </div>
 
         <div class="preview-actions">
-            <button class="btn-preview-action btn-settings-open" onclick="window.toggleMobileSettingsModal()" title="Mở bảng tuỳ chỉnh">⚙️ Tuỳ Chỉnh</button>
             <button class="btn-preview-action btn-copy" onclick="copyCanvas()">📋 Copy</button>
             <button class="btn-preview-action btn-save-one" onclick="downloadSingleImage()">💾 Lưu 1 Ảnh</button>
             <button id="btnShareCanvas" class="btn-preview-action btn-share" onclick="shareCanvasImage()">📤 Chia Sẻ</button>
@@ -1947,7 +1936,7 @@
 
     <!-- Scripts loaded from external files -->
     <script src="js/template-manager.js?v=3.0"></script>
-    <script src="js/main.js?v=4.7"></script>
+    <script src="js/main.js?v=4.8"></script>
 </body>
 
 </html>
