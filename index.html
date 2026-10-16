@@ -17,7 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=4.0">
+    <link rel="stylesheet" href="css/style.css?v=4.1">
     <script src="js/configs.js?v=2.5"></script>
     <style>
         /* CSS GIAO DIỆN PRO-BOX MỚI TỪ BẢN THAM KHẢO */
@@ -1220,11 +1220,8 @@
 
                 <!-- Các nút thao tác -->
                 <div class="drawer-btn-group">
-                    <button type="button" class="btn-drawer-action btn-drawer-copy" onclick="copyMac()">
+                    <button type="button" class="btn-drawer-action btn-drawer-copy" onclick="copyMac()" style="width: 100%;">
                         📋 Sao Chép Mã Máy
-                    </button>
-                    <button type="button" id="btnDrawerCheckLicense" class="btn-drawer-action btn-drawer-check" onclick="window.checkLicense(true)" title="Kiểm tra lại bản quyền trực tuyến">
-                        🔄 Kiểm Tra Lại
                     </button>
                 </div>
             </div>
@@ -1828,8 +1825,11 @@
                 })();
             </script>
             <button onclick="copyMac()" class="drm-btn" style="background:#007bff; margin-bottom:12px;">📋 COPY MÃ MÁY NÀY</button>
-            <button onclick="checkLicense(true)" class="drm-btn" style="background:#27ae60; margin-bottom:12px;">🔄 KIỂM TRA LẠI BẢN QUYỀN (ONLINE)</button>
             <div id="drmMessage" style="margin-top: 10px;"></div>
+            <div id="drmAutoCheckHint" style="margin-top: 15px; font-size: 13px; color: #16a085; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <span class="drm-spinner"></span>
+                <span>Hệ thống tự động kiểm tra kích hoạt...</span>
+            </div>
         </div>
     </div>
     <div id="printArea"></div>
@@ -1936,7 +1936,7 @@
 
     <!-- Scripts loaded from external files -->
     <script src="js/template-manager.js?v=3.0"></script>
-    <script src="js/main.js?v=4.2"></script>
+    <script src="js/main.js?v=4.4"></script>
 </body>
 
 </html>

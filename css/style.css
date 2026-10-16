@@ -266,6 +266,19 @@
     .drm-btn { width: 100%; padding: 15px; font-size: 16px; background: #27ae60; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
     .drm-btn:hover { background: #2ecc71; }
     #drmMessage { color: #e74c3c; font-weight: bold; margin-top: 15px; font-size: 14px; }
+    .drm-spinner {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        border: 2.5px solid #16a085;
+        border-top-color: transparent;
+        border-radius: 50%;
+        animation: drmSpin 0.9s linear infinite;
+        vertical-align: middle;
+    }
+    @keyframes drmSpin {
+        to { transform: rotate(360deg); }
+    }
     
     /* =========================================================
        NGĂN XẾP BẢN QUYỀN GÓC PHẢI (SLIDE-OUT LICENSE DRAWER)
