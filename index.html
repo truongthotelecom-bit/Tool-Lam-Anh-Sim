@@ -421,8 +421,9 @@
             padding: 20px;
             box-sizing: border-box;
             cursor: grab;
-            scroll-behavior: smooth;
+            scroll-behavior: auto;
             -webkit-overflow-scrolling: touch;
+            touch-action: pan-x pan-y;
         }
 
         #preview {
@@ -433,6 +434,7 @@
             border: 1px solid #ddd;
             transform-origin: 0 0;
             transition: width 0.1s ease-out;
+            touch-action: none;
         }
 
         /* Toast thông báo Pro */
@@ -1932,7 +1934,7 @@
 
     <!-- Scripts loaded from external files -->
     <script src="js/template-manager.js?v=3.0"></script>
-    <script src="js/main.js?v=4.9"></script>
+    <script src="js/main.js?v=5.0"></script>
 </body>
 
 </html>
