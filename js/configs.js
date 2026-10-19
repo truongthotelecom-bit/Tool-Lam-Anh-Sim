@@ -43,6 +43,7 @@ window.menhColors = {
 
 // --- 4. BẢN ĐỒ ÁNH XẠ CHECKBOX ---
 window.colCheckMap = {
+    'stt': 'chkStt', 'hStt': 'chkStt',
     'num': 'chkNum', 'hNum': 'chkNum',
     'price': 'chkPrice', 'hPrice': 'chkPrice',
     'menh': 'chkMenh', 'hMenh': 'chkMenh',
@@ -53,8 +54,8 @@ window.colCheckMap = {
 
 // --- 5. TÊN ĐỊNH DANH ĐỐI TƯỢNG (BLUEPRINT UX) ---
 window._objNames = {
-    num: 'SỐ', price: 'GIÁ', menh: 'MỆNH', mang: 'MẠNG', data1: 'DỮ LIỆU 1', data2: 'DỮ LIỆU 2',
-    hNum: 'T.ĐỀ SỐ', hPrice: 'T.ĐỀ GIÁ', hMenh: 'T.ĐỀ MỆNH', hMang: 'T.ĐỀ MẠNG', hData1: 'T.ĐỀ DỮ LIỆU 1', hData2: 'T.ĐỀ DỮ LIỆU 2',
+    stt: 'STT', num: 'SỐ', price: 'GIÁ', menh: 'MỆNH', mang: 'MẠNG', data1: 'DỮ LIỆU 1', data2: 'DỮ LIỆU 2',
+    hStt: 'T.ĐỀ STT', hNum: 'T.ĐỀ SỐ', hPrice: 'T.ĐỀ GIÁ', hMenh: 'T.ĐỀ MỆNH', hMang: 'T.ĐỀ MẠNG', hData1: 'T.ĐỀ DỮ LIỆU 1', hData2: 'T.ĐỀ DỮ LIỆU 2',
     header1: 'Đầu Trang 1', header2: 'Đầu Trang 2', footer1: 'Chân Trang 1', footer2: 'Chân Trang 2',
     ctl: 'Trái Trên', ctr: 'Phải Trên', cbl: 'Trái Dưới', cbr: 'Phải Dưới', pageNum: 'Số Trang'
 };
