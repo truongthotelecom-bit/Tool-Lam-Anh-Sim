@@ -17,10 +17,10 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=4.8">
+    <link rel="stylesheet" href="css/style.css?v=4.9">
     <script>
         // Tự động xoá cache cũ nếu có phiên bản mới
-        const CURRENT_APP_BUILD = '8.0';
+        const CURRENT_APP_BUILD = '8.1';
         if (localStorage.getItem('app_build_version') !== CURRENT_APP_BUILD) {
             if ('caches' in window) {
                 caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))));
@@ -1970,6 +1970,26 @@
             transform: scale(0.93);
         }
 
+        .m-tag-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 4px 9px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.15s;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .m-tag-btn:hover, .m-tag-btn:active {
+            background: #007bff;
+            color: #fff;
+            border-color: #007bff;
+            transform: scale(0.95);
+        }
+
         /* ==========================================================================
            CỐ ĐỊNH TAB CẤP 1 - 2 - 3 TRÊN DESKTOP (TỐI ƯU CẢ MÀN HÌNH ĐỘ PHÂN GIẢI THẤP)
            ========================================================================== */
@@ -2907,7 +2927,7 @@
 
     <!-- Scripts loaded from external files -->
     <script src="js/template-manager.js?v=3.2"></script>
-    <script src="js/main.js?v=8.0"></script>
+    <script src="js/main.js?v=8.1"></script>
 </body>
 
 </html>

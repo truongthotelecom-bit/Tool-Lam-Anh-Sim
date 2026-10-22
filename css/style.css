@@ -1173,6 +1173,26 @@
     }
 }
 
+.m-tag-btn {
+    background: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 4px 9px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.m-tag-btn:hover, .m-tag-btn:active {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+    transform: scale(0.95);
+}
+
 /* THANH MENU CUỘN TRÊN ĐẦU POPUP - Ép thành đường băng */
 #mobileTabMenu { 
     display: flex; 
