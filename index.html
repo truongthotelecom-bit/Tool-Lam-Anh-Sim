@@ -17,10 +17,10 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&family=Oswald:wght@400;700&family=Pattaya&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;700&family=Outfit:wght@400;700&family=Playfair+Display:wght@400;700&family=Bungee&family=Lobster&family=Pacifico&family=Saira+Stencil+One&family=Charm:wght@400;700&family=Sedgwick+Ave+Display&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=4.4">
+    <link rel="stylesheet" href="css/style.css?v=4.5">
     <script>
         // Tự động xoá cache cũ nếu có phiên bản mới
-        const CURRENT_APP_BUILD = '7.4';
+        const CURRENT_APP_BUILD = '7.6';
         if (localStorage.getItem('app_build_version') !== CURRENT_APP_BUILD) {
             if ('caches' in window) {
                 caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))));
@@ -349,9 +349,26 @@
                 display: flex !important;
             }
 
-            /* Ẩn các thanh Tab cũ nằm trong Body của Popup trên Mobile */
-            #mobileModalBody .sub-tabs,
+            /* Ẩn Tab Cấp 2 trong Body (vì đã hiển thị trên mobileTabMenu), hiển thị Tab Cấp 3 cố định ở đỉnh Body */
+            #mobileModalBody > .tab-content > .sub-tabs,
+            #mobileModalBody #globalTextTabs {
+                display: none !important;
+            }
+
             #mobileModalBody .sub-sub-tabs {
+                display: flex !important;
+                gap: 6px !important;
+                overflow-x: auto !important;
+                flex-wrap: nowrap !important;
+                scrollbar-width: none !important;
+                position: sticky !important;
+                top: -10px !important;
+                z-index: 10 !important;
+                background: #f4f7f6 !important;
+                padding: 6px 0 !important;
+                margin-bottom: 10px !important;
+            }
+            #mobileModalBody .sub-sub-tabs::-webkit-scrollbar {
                 display: none !important;
             }
         }
@@ -422,7 +439,7 @@
         }
         @media screen and (max-width: 768px) {
             .col-settings.mobile-full-active {
-                padding-bottom: 120px !important;
+                padding: 0 !important;
             }
         }
 
@@ -1179,7 +1196,7 @@
         }
         @media screen and (max-width: 768px) {
             .col-settings.mobile-full-active {
-                padding-bottom: 100px !important;
+                padding: 0 !important;
             }
         }
 
@@ -2901,7 +2918,7 @@
 
     <!-- Scripts loaded from external files -->
     <script src="js/template-manager.js?v=3.2"></script>
-    <script src="js/main.js?v=7.4"></script>
+    <script src="js/main.js?v=7.6"></script>
 </body>
 
 </html>

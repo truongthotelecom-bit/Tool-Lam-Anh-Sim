@@ -1006,12 +1006,102 @@
     }
 
     .col-settings.mobile-full-active #dynamic-tabs-container {
-        padding: 10px 12px 120px 12px !important;
-        flex: 1 1 0 !important;
+        padding: 0 !important;
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    .col-settings.mobile-full-active #dynamic-tabs-container > .tab-content.active {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    /* Tab Cấp 2 cố định */
+    .col-settings.mobile-full-active #dynamic-tabs-container > .tab-content.active > .sub-tabs {
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+        padding: 8px 10px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 998 !important;
+        background: #f8fafc !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+    }
+
+    /* Tab Cấp 2 Content */
+    .col-settings.mobile-full-active #dynamic-tabs-container .sub-tab-content.active {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    /* Tab Cấp 3 cố định */
+    .col-settings.mobile-full-active #dynamic-tabs-container .sub-tab-content.active > .sub-tabs,
+    .col-settings.mobile-full-active #dynamic-tabs-container .sub-tab-content.active > .sub-sub-tabs {
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+        padding: 8px 10px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 997 !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+    }
+
+    /* Chữ Góc Tab 3 Container */
+    .col-settings.mobile-full-active #dynamic-globals-container {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    .col-settings.mobile-full-active #dynamic-globals-container .sub-tab-content.active {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    .col-settings.mobile-full-active #dynamic-globals-container .sub-tab-content.active > .sub-tabs,
+    .col-settings.mobile-full-active #dynamic-globals-container .sub-tab-content.active > .sub-sub-tabs {
+        flex: 0 0 auto !important;
+        margin: 0 !important;
+        padding: 8px 10px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 997 !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid #e2e8f0 !important;
+    }
+
+    /* VÙNG CUỘN DUY NHẤT: Nội dung cài đặt / Thẻ cấp 4 */
+    .col-settings.mobile-full-active .sub-sub-tab-content.active,
+    .col-settings.mobile-full-active #dynamic-globals-container .sub-sub-tab-content.active,
+    .col-settings.mobile-full-active #sub-gt-chung.active,
+    .col-settings.mobile-full-active #sub-hCommon.active,
+    .col-settings.mobile-full-active #sub-luoi-chung.active,
+    .col-settings.mobile-full-active #tab-general .sub-tab-content.active,
+    .col-settings.mobile-full-active .sub-tab-content.active:not(:has(.sub-sub-tab-content)):not(:has(.sub-sub-tabs)) {
+        flex: 1 1 0% !important;
         min-height: 0 !important;
         overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding: 10px 12px 140px 12px !important;
+        box-sizing: border-box !important;
         -webkit-overflow-scrolling: touch !important;
     }
+
 
     /* Đảm bảo khi đang mở Full, modal nửa màn hình mobileSettingModal hoàn toàn ẩn */
     body.mobile-full-settings-open #mobileSettingModal,
@@ -1108,6 +1198,30 @@
     flex-grow: 1;
     -webkit-overflow-scrolling: touch;
 }
+
+.mobile-modal-body > .tab-content > .sub-tabs,
+.mobile-modal-body #globalTextTabs {
+    display: none !important;
+}
+
+.mobile-modal-body .sub-sub-tabs {
+    display: flex !important;
+    position: sticky !important;
+    top: -10px !important;
+    z-index: 10 !important;
+    background: #f4f7f6 !important;
+    padding-top: 4px !important;
+    padding-bottom: 8px !important;
+    margin-bottom: 8px !important;
+    gap: 6px !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    scrollbar-width: none !important;
+}
+.mobile-modal-body .sub-sub-tabs::-webkit-scrollbar {
+    display: none !important;
+}
+
 
 @keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUpSheet { from { transform: translateY(100%); } to { transform: translateY(0); } }
