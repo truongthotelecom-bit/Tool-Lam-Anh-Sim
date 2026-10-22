@@ -862,6 +862,26 @@
     font-size: 13px;
     line-height: 1;
 }
+.btn-mobile-back {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #f1f5f9;
+    color: #1e293b;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+    user-select: none;
+}
+.btn-mobile-back:active {
+    transform: scale(0.92);
+    background: #e2e8f0;
+}
 .mobile-modal-close-btn { background: #ff4757; border: none; width: 34px; height: 34px; border-radius: 50%; font-weight: bold; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 3px 10px rgba(255, 71, 87, 0.4); transition: transform 0.15s; }
 .mobile-modal-close-btn:active { transform: scale(0.9); }
 
@@ -1021,6 +1041,35 @@
         flex-shrink: 0 !important;
         white-space: nowrap !important;
     }
+
+    /* Inspector trong Full Mode: mở rộng từ dưới hàng Tab cấp 3 */
+    body.mobile-full-settings-open #mobileInspectorModal,
+    .col-settings.mobile-full-active ~ #mobileInspectorModal {
+        top: var(--m-tabs-bottom, 230px) !important;
+        height: calc(100dvh - var(--m-tabs-bottom, 230px)) !important;
+        justify-content: flex-start !important;
+    }
+
+    body.mobile-full-settings-open #mobileInspectorModal .m-inspector-backdrop,
+    .col-settings.mobile-full-active ~ #mobileInspectorModal .m-inspector-backdrop {
+        display: none !important;
+    }
+
+    body.mobile-full-settings-open #mobileInspectorModal .m-inspector-content,
+    .col-settings.mobile-full-active ~ #mobileInspectorModal .m-inspector-content {
+        height: 100% !important;
+        max-height: 100% !important;
+        border-radius: 16px 16px 0 0 !important;
+        box-shadow: 0 -10px 25px rgba(0, 0, 0, 0.15) !important;
+        border-top: 2.5px solid #2563eb !important;
+    }
+
+    body.mobile-full-settings-open #mobileInspectorModal .m-inspector-body,
+    .col-settings.mobile-full-active ~ #mobileInspectorModal .m-inspector-body {
+        max-height: none !important;
+        flex: 1 1 auto !important;
+        padding-bottom: 50px !important;
+    }
 }
 
 @keyframes slideUpMobileFull {
@@ -1084,6 +1133,159 @@
     }
     .mobile-modal-header-area { border-radius: 12px 12px 0 0; }
     .mobile-modal-drag-handle { display: none; } /* Ẩn tay cầm vuốt đi */
+
+    /* ==========================================================================
+       CỐ ĐỊNH TAB CẤP 1 - 2 - 3 TRÊN DESKTOP (TỐI ƯU CHO MÀN HÌNH ĐỘ PHÂN GIẢI THẤP)
+       ========================================================================== */
+    .column.col-settings {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100% !important;
+        max-height: calc(100vh - 30px) !important;
+        overflow: hidden !important; /* KHÔNG cuộn cả cột settings */
+        padding: 12px 14px 12px 14px !important;
+        box-sizing: border-box !important;
+    }
+
+    /* Tab Cấp 1 (Menu chính) cố định ở đỉnh */
+    .col-settings > .tabs {
+        flex: 0 0 auto !important;
+        margin-bottom: 8px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 10 !important;
+        background: var(--surface) !important;
+    }
+
+    /* Container chứa các tab */
+    #dynamic-tabs-container {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    /* Tab Cấp 1 Content */
+    #dynamic-tabs-container > .tab-content.active {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    /* Tab Cấp 2 cố định */
+    #dynamic-tabs-container > .tab-content.active > .sub-tabs {
+        flex: 0 0 auto !important;
+        margin-bottom: 8px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 9 !important;
+        background: #fdfdfd !important;
+    }
+
+    /* Tab Cấp 2 Content */
+    #dynamic-tabs-container .sub-tab-content.active {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+    }
+
+    /* Tab Cấp 3 cố định */
+    #dynamic-tabs-container .sub-tab-content.active > .sub-tabs,
+    #dynamic-tabs-container .sub-tab-content.active > .sub-sub-tabs {
+        flex: 0 0 auto !important;
+        margin-bottom: 8px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 8 !important;
+        background: #fff !important;
+    }
+
+    /* --- ĐẶC BIỆT CỐ ĐỊNH TAB CẤP 3 Ở PHẦN CHỮ GÓC (tab-globaltext) --- */
+    #dynamic-globals-container {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important; /* Tuyệt đối KHÔNG cuộn container này */
+    }
+
+    #dynamic-globals-container .sub-tab-content.active {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important; /* Giữ Tab cấp 3 cố định ở đỉnh */
+    }
+
+    #dynamic-globals-container .sub-tab-content.active > .sub-tabs,
+    #dynamic-globals-container .sub-tab-content.active > .sub-sub-tabs {
+        flex: 0 0 auto !important;
+        margin-bottom: 8px !important;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 8 !important;
+        background: #fff !important; /* CỐ ĐỊNH TAB CẤP 3 CHỮ GÓC */
+    }
+
+    /* Vùng cuộn cài đặt của Chữ Góc */
+    #dynamic-globals-container .sub-sub-tab-content.active,
+    #sub-gt-chung.active {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding-right: 4px !important;
+        padding-bottom: 80px !important;
+        box-sizing: border-box !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* CHỈ DUY NHẤT VÙNG CÀI ĐẶT BÊN DƯỚI MỚI ĐƯỢC PHÉP CUỘN */
+    #dynamic-tabs-container .sub-sub-tab-content.active,
+    #dynamic-tabs-container .sub-tab-content.active:not(:has(.sub-sub-tab-content)):not(:has(.sub-sub-tabs)),
+    #tab-general .sub-tab-content.active,
+    #sub-hCommon.active {
+        flex: 1 1 0% !important;
+        min-height: 0 !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        padding-right: 4px !important;
+        padding-bottom: 80px !important;
+        box-sizing: border-box !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #dynamic-tabs-container .sub-sub-tab-content.active::-webkit-scrollbar,
+    #dynamic-tabs-container .sub-tab-content.active::-webkit-scrollbar,
+    #dynamic-globals-container .sub-sub-tab-content.active::-webkit-scrollbar,
+    #sub-gt-chung.active::-webkit-scrollbar {
+        width: 5px;
+    }
+    #dynamic-tabs-container .sub-sub-tab-content.active::-webkit-scrollbar-thumb,
+    #dynamic-tabs-container .sub-tab-content.active::-webkit-scrollbar-thumb,
+    #dynamic-globals-container .sub-sub-tab-content.active::-webkit-scrollbar-thumb,
+    #sub-gt-chung.active::-webkit-scrollbar-thumb {
+        background: #bbb;
+        border-radius: 4px;
+    }
+    #dynamic-tabs-container .sub-sub-tab-content.active::-webkit-scrollbar-thumb:hover,
+    #dynamic-tabs-container .sub-tab-content.active::-webkit-scrollbar-thumb:hover,
+    #dynamic-globals-container .sub-sub-tab-content.active::-webkit-scrollbar-thumb:hover,
+    #sub-gt-chung.active::-webkit-scrollbar-thumb:hover {
+        background: #888;
+    }
+    #dynamic-tabs-container .sub-sub-tab-content.active,
+    #dynamic-tabs-container .sub-tab-content.active,
+    #dynamic-globals-container .sub-sub-tab-content.active,
+    #sub-gt-chung.active {
+        scrollbar-width: thin;
+        scrollbar-color: #bbb transparent;
+    }
 }
 @keyframes popUpRight { from { opacity: 0; transform: translateX(50px) scale(0.9); } to { opacity: 1; transform: translateX(0) scale(1); } }
 

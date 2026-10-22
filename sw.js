@@ -1,5 +1,5 @@
 // Service Worker cho Tool Bảng Số VIP (PWA Standalone)
-const CACHE_NAME = 'bang-so-vip-v32';
+const CACHE_NAME = 'bang-so-vip-v55';
 const STATIC_ASSETS = [
   './index.html',
   'index.html',
@@ -33,6 +33,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keys.map((key) => {
           if (key !== CACHE_NAME) {
+            console.log('SW: Wiping old cache:', key);
             return caches.delete(key);
           }
         })
@@ -47,6 +48,14 @@ self.addEventListener('fetch', (event) => {
 
   // Không cache các API Google Apps Script hoặc external API request
   if (url.origin !== location.origin || event.request.method !== 'GET') {
+    return;
+  }
+
+  // Khi đang chạy local dev / localhost, LUÔN LUÔN fetch tươi mới từ máy chủ
+  if (url.hostname === 'localhost' || url.hostname === '127.0.0.1') {
+    event.respondWith(
+      fetch(event.request, { cache: 'no-store' }).catch(() => caches.match(event.request))
+    );
     return;
   }
 
