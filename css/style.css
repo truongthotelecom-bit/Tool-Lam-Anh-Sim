@@ -1199,26 +1199,15 @@
     -webkit-overflow-scrolling: touch;
 }
 
-.mobile-modal-body > .tab-content > .sub-tabs,
-.mobile-modal-body #globalTextTabs {
-    display: none !important;
-}
-
-.mobile-modal-body .sub-sub-tabs {
-    display: flex !important;
-    position: sticky !important;
-    top: -10px !important;
-    z-index: 10 !important;
-    background: #f4f7f6 !important;
-    padding-top: 4px !important;
-    padding-bottom: 8px !important;
-    margin-bottom: 8px !important;
-    gap: 6px !important;
-    overflow-x: auto !important;
-    flex-wrap: nowrap !important;
-    scrollbar-width: none !important;
-}
-.mobile-modal-body .sub-sub-tabs::-webkit-scrollbar {
+/* Ẩn hoàn toàn tất cả hàng Tab bên trong Body (vì hàng Tab đã hiển thị cố định duy nhất trên thanh header mobileTabMenu) */
+#mobileModalBody .sub-tabs,
+#mobileModalBody .sub-sub-tabs,
+#mobileModalBody #globalTextTabs,
+#mobileModalBody #luoiChungSubTabs,
+.mobile-modal-body .sub-tabs,
+.mobile-modal-body .sub-sub-tabs,
+.mobile-modal-body #globalTextTabs,
+.mobile-modal-body #luoiChungSubTabs {
     display: none !important;
 }
 
